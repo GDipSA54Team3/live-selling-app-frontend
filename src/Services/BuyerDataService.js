@@ -22,4 +22,19 @@ class BuyerDataService {
     viewCart(buyerId) {
         return axios.get(BUYER_API_BASE_URL + "/" + buyerId);
     }
+
+    editCartQty(orderProdId, qty) {
+        return axios.get(BUYER_API_BASE_URL + "/" + orderProdId + "/" + qty);
+    }
+
+    removeCartItem(orderProdId) {
+        return axios.get(BUYER_API_BASE_URL + "/" + orderProdId);
+    }
+
+    emptyCart(buyerId) {
+        return axios.get(BUYER_API_BASE_URL + "/" + buyerId);
+    }
+
 }
+
+export default new BuyerDataService();
