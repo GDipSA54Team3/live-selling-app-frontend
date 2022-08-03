@@ -33,7 +33,6 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
-
         </Routes>
 </div>
       </Router>
