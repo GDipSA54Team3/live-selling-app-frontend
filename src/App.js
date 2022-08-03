@@ -21,8 +21,33 @@ function App() {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to={"#"} className="nav-link">
+                Favorites
+              </Link>
+              </li>
+              <li className="nav-item">
+              <Link to={"#"} className="nav-link">
+                Purchases / Orders
+              </Link>
+              </li>
+              <li className="nav-item">
+              <Link to={"#"} className="nav-link">
+                Schedule Stream
+              </Link>
+              </li>
+            <li className="nav-item">
+              <Link to={"#"} className="nav-link">
+                My Store
+              </Link>
+              </li>
+            <li className="nav-item">
               <Link to={"/dashboard"} className="nav-link">
                 Dashboard 
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"#"} className="nav-link">
+                Logout
               </Link>
             </li>
           </div>
