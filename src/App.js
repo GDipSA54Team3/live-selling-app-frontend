@@ -1,9 +1,11 @@
 import React from 'react';
 import './App.css';
+import './ProductList.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from './component/Home'
 import Dashboard from './component/Dashboard';
+import ProductList from './component/ProductList';
 
 function App() {
   return (
@@ -36,7 +38,7 @@ function App() {
               </Link>
               </li>
             <li className="nav-item">
-              <Link to={"#"} className="nav-link">
+              <Link to={"/productlist"} className="nav-link">
                 My Store
               </Link>
               </li>
@@ -55,6 +57,7 @@ function App() {
         </div>
         <div className="container mt-3">      
         <Routes>
+          <Route path="/productlist" element={<ProductList />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
