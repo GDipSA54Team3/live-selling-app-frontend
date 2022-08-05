@@ -1,10 +1,9 @@
-import axios from "axios";
+// import axios from "axios";
+//import React, { Component, useEffect} from "react";
 
-const Dashboard_API_BASE_URL = "";
+// const imageUrl = "https://picsum.photos/200/300";
 
-class DashboardDataService {
-  getChart() {
-    return axios.get(Dashboard_API_BASE_URL);
-  } 
+
+class DashboardDataService {  
 }
 export default new DashboardDataService();
