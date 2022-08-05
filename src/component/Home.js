@@ -1,105 +1,94 @@
 import React, { Component } from "react";
-import BuyerDataService from "../Services/BuyerDataService";
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom'
-import dateFormat from 'dateformat';
+import LoginDataService from "../Services/LoginDataService";
+import { withRouter } from '../withRouter';
 
 class Home extends Component {
     constructor(props) {
         super(props);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.submit = this.submit.bind(this);
 
         this.state = {
-            streams: []
-        }
+            username: "",
+            password: ""
+        };
 
     }
-
+    
     componentDidMount() {
-        BuyerDataService.getAllStreams().then(response => {
-            this.setState({ streams: response.data });
+        LoginDataService.getLoggedInUser().then(response => {
+            (response.status === 200) ?  this.props.navigate('/dashboard') : this.props.navigate('/home');
             console.log(response.data);
-        })
-            .catch(e => { console.log(e); });
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+    onChangeUsername(e) {
+        this.setState({
+            username: e.target.value
+        });
+    }
+
+    onChangePassword(e) {
+        this.setState({
+            password: e.target.value
+        });
+    }
+
+    submit() {
+        var data = {
+            username: this.state.username,
+            password: this.state.password
+        };
+        LoginDataService.loginCheck(data).then(response => {
+            (response.status === 200) ?  this.props.navigate('/dashboard') : this.props.navigate('/home');
+            console.log(response.data);
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
 
 
     render() {
         return (
-            <div>
-                <div className="container-fluid">
-                    <h2 className="text-start">Ongoing Streams:</h2>
+            <div className="container-fluid">
+                <div className="text-start">
+                    <h1>Welcome, Customer!</h1>
                     <br />
-                    <div className="row">
-                        {
-                            this.state.streams.map(
-                                stream => (
-                                    OngoingStreams(stream)
-                                )
-                            )
-                        }
+                    <div className="form-group my-2">
+                        <label htmlFor="username">Username:</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="username"
+                            required
+                            value={this.state.username}
+                            onChange={this.onChangeUsername}
+                            name="username"
+                        />
                     </div>
-                    <br />
-                    <br />
-                    <br />
-                    <h2 className="text-start">Upcoming Streams:</h2>
-                    <br />
-                    <div className="row">
-                        {
-                            this.state.streams.map(
-                                stream => (
-                                    UpcomingStreams(stream)
-                                )
-                            )
-                        }
+                    <div className="form-group my-2">
+                        <label htmlFor="password">Password:</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password"
+                            required
+                            value={this.state.password}
+                            onChange={this.onChangePassword}
+                            name="password"
+                        />
                     </div>
+                    <button onClick={this.submit} className="btn btn-success">
+                        Sign in
+                    </button>
                 </div>
             </div>
         )
     }
 }
 
-export default Home
-
-function OngoingStreams(stream) {
-    if (stream.status === "ONGOING") {
-        return (
-            <Card className="mx-3" style={{ width: '18rem' }}>
-                <Card.Img variant="top" src="" />
-                <Card.Body>
-                    <Card.Title>{stream.title}</Card.Title>
-                    <Card.Text>
-                        {stream.schedule}
-                    </Card.Text>
-                    <Link to={"/streams/" + stream.id}>
-                        <Button variant="danger">Watch Live!</Button>
-                    </Link>
-                </Card.Body>
-            </Card>
-        );
-    } else {
-        return null;
-    }
-}
-
-function UpcomingStreams(stream) {
-    if (stream.status === "PENDING") {
-        return (
-            <Card className="mx-3" style={{ width: '18rem' }}>
-                <Card.Img variant="top" src="" />
-                <Card.Body>
-                    <Card.Title>{stream.title}</Card.Title>
-                    <Card.Text>
-                        {dateFormat(stream.schedule, "dd-mm-yyyy")}
-                        <br/>
-                        {dateFormat(stream.schedule, "HH:MM")}
-                    </Card.Text>
-                    <Button variant="primary disabled">Stay Tuned!</Button>
-                </Card.Body>
-            </Card>
-        );
-    } else {
-        return null;
-    }
-}
+export default withRouter(Home);

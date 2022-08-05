@@ -1,10 +1,11 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from './component/Home'
+import React from 'react';
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import './App.css';
 import Dashboard from './component/Dashboard';
-import StreamPage from './component/StreamPage';
+import Home from './component/Home';
+import MyStore from './component/MyStore';
+import Logout from "./component/Logout";
 
 function App() {
   return (
@@ -31,6 +32,11 @@ function App() {
                   My Store
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to={"/logout"} className="nav-link">
+                  Logout
+                </Link>
+              </li>
             </div>
           </nav>
         </div>
@@ -39,7 +45,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/home" element={<Home />} />
             <Route path="/" element={<Home />} />
-            <Route path="/streams/:id" element={<StreamPage />} />
+            <Route path="/mystore" element={<MyStore />} />
+            <Route path="/logout" element={<Logout />} />
 
           </Routes>
         </div>
