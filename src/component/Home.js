@@ -17,12 +17,9 @@ class Home extends Component {
     }
     
     componentDidMount() {
-        LoginDataService.getLoggedInUser().then(response => {
-            (response.status === 200) ?  this.props.navigate('/dashboard') : this.props.navigate('/home');
-            console.log(response.data);
-        }).catch(e => {
-            console.log(e);
-        });
+        if (sessionStorage.getItem('user') !== null) {
+            this.props.navigate('/mystore');
+        }
     }
 
     onChangeUsername(e) {
@@ -43,7 +40,12 @@ class Home extends Component {
             password: this.state.password
         };
         LoginDataService.loginCheck(data).then(response => {
-            (response.status === 200) ?  this.props.navigate('/dashboard') : this.props.navigate('/home');
+             if (response.status === 200) {
+                sessionStorage.setItem('user', JSON.stringify(response.data))
+                this.props.navigate('/mystore');
+             } else {
+                this.props.navigate('/home');
+             }
             console.log(response.data);
         }).catch(e => {
             console.log(e);

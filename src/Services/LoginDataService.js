@@ -7,14 +7,6 @@ class LoginDataService {
         return axios.post(LOGIN_API_BASE_URL+"/login", LoginBag);
     }
 
-    logoutUser() {
-        return axios.get(LOGIN_API_BASE_URL+"/logout");
-    }
-
-    getLoggedInUser() {
-        return axios.get(LOGIN_API_BASE_URL+"/welcome");
-    }
-
 }
 
 export default new LoginDataService();
