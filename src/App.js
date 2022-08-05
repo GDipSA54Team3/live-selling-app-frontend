@@ -1,55 +1,68 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
+import './ProductList.css';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Home from './component/Home'
 import Dashboard from './component/Dashboard';
-import Home from './component/Home';
-import MyStore from './component/MyStore';
-import Logout from "./component/Logout";
+import ProductList from './component/ProductList';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <div>
-          <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <div className="navbar-nav mr-auto">
-              <li>
-                Demo
+        <nav className="navbar navbar-expand navbar-dark bg-dark">
+          <div className="navbar-nav mr-auto">
+            <li>
+              Demo
+            </li>
+            <li className="nav-item">
+              <Link to={"/home"} className="nav-link">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"#"} className="nav-link">
+                Favorites
+              </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/home"} className="nav-link">
-                  Home
-                </Link>
+              <Link to={"#"} className="nav-link">
+                Purchases / Orders
+              </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/dashboard"} className="nav-link">
-                  Dashboard
-                </Link>
+              <Link to={"#"} className="nav-link">
+                Schedule Stream
+              </Link>
               </li>
-              <li className="nav-item">
-                <Link to={"/mystore"} className="nav-link">
-                  My Store
-                </Link>
+            <li className="nav-item">
+              <Link to={"/productlist"} className="nav-link">
+                My Store
+              </Link>
               </li>
-              <li className="nav-item">
-                <Link to={"/logout"} className="nav-link">
-                  Logout
-                </Link>
-              </li>
-            </div>
-          </nav>
+            <li className="nav-item">
+              <Link to={"/dashboard"} className="nav-link">
+                Dashboard 
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"#"} className="nav-link">
+                Logout
+              </Link>
+            </li>
+          </div>
+        </nav>
         </div>
-        <div className="container mt-3">
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/mystore" element={<MyStore />} />
-            <Route path="/logout" element={<Logout />} />
-
-          </Routes>
-        </div>
+        <div className="container mt-3">      
+        <Routes>
+          <Route path="/productlist" element={<ProductList />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+</div>
       </Router>
     </div>
   );
