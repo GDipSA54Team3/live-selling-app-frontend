@@ -1,94 +1,101 @@
-import React,{ useState  } from "react"; 
+import React,{ Component } from "react"; 
+import ProductDataService from "../Services/ProductDataService"
+import { withRouter } from "./withRouter";
 
-const ProductList = () => {
+class ProductList extends Component{
+    constructor(props){
+        super(props);
+        this.retrieveProducts = this.retrieveProducts.bind(this);
+        this.refreshList = this.refreshList.bind(this);
+        this.setActiveProduct = this.setActiveProduct.bind(this);
+        this.removeAllProducts = this.removeAllProducts.bind(this);
 
-    const dummydata = [
-        {Name:'Aloe Vera Gel', Category:'Health', Description: 'Healing gel from South Korea. Used by BTS.', Price: 50.00, Quantity:1},
-        {Name:'Collagen Face Mask', Category:'Health', Description: 'Get glowing skin in 1 week! Number 1 product in Busan.', Price: 25.00, Quantity:100},
-        {Name:'Anti-aging body lotion', Category:'Health', Description: 'Get snow white skin. Number 1 product in Busan.', Price: 25.00, Quantity:100},
-        {Name:'iPhone22', Category:'Technology', Description: 'Latest iPhone from the future', Price: 1500.00, Quantity:2},
-        {Name:'MacBook Pro 15 M6', Category:'Technology', Description: 'Latest MacBook from the future', Price: 3500.00, Quantity:3},
-        {Name:'Playstation 5', Category:'Technology', Description: 'Next-gen console from Sony', Price: 799.00, Quantity:5},
-
-    ]
-
-    const [value, setValue] = useState('');
-    const [dataSource, setDataSource] = useState(dummydata);
-    const [tableFilter, setTableFilter] = useState([]);
-
-    const filterData = (e) => {
-        if (e.target.value != ""){
-            setValue(e.target.value);
-            const filterTable = dataSource.filter(o => Object.keys(o).some(k=>
-                String(o[k]).toLowerCase().includes(e.target.value.toLowerCase())
-                ));
-            setTableFilter([...filterTable])
-        }else{
-            setValue(e.target.value);
-            setDataSource([...dataSource])
+        this.state = {
+            products : [],
+            currentProduct: null,
+            currentIndex: -1, 
         }
     }
-    return(
-        <><div>
-            <h4>List of Products</h4>
-        </div>
-        <div>
-        <button type="button" class="btn btn-dark">Add Product</button>
-        </div>
-        <div className="container mt-5">
-            <div class="input-group mb-3">
-             <input type ="text" class="form-control" placeholder="Search" aria-label="Name" 
-             aria-aria-describedby="basic-addon1" value={value} onchange={filterData}/>
-        </div>
+    componentDidMount(){
+        this.retrieveProducts();
+    }
+
+    retrieveProducts(){
+        ProductDataService.getProducts()
+        .then(response => {
+            this.setState({
+                products: response.data
+            });
+            console.log(response.data);
+        })
+     .catch( e => {
+        console.log(e);
+     });
+    }
     
-        
-        <table class="table">
-        
-    <thead class="table-dark">
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Category</th>
-      <th scope="col">Description</th>
-      <th scope="col">Price</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {value.length> 0 ? tableFilter.map((data) => {
-        return (
-            <tr>
-            <td>{data.Name}</td>
-            <td>{data.Category}</td>
-            <td>{data.Description}</td>
-            <td>{data.Price}</td>
-            <td>{data.Quantity}</td>
-            <td><button className ="btn btn-dark">Update</button><button className ="btn btn-dark">Remove</button></td>
-            </tr>
-        )
-    })
-    :
-    dataSource.map((data) => {
-        return(
-        <tr>
-            <td>{data.Name}</td>
-            <td>{data.Category}</td>
-            <td>{data.Description}</td>
-            <td>{data.Price}</td>
-            <td>{data.Quantity}</td>
-            <td><button className ="btn btn-dark">Update</button><button className ="btn btn-dark">Remove</button></td>
-        </tr>
-    )
-   })}
-  </tbody>
-</table>
-</div>
-</> 
+    refreshList(){
+        this.retrieveProducts();
+        this.setState({
+            currentProduct: null,
+            currentIndex: -1
+        });
+    }
+
+    setActiveProduct(Product, index){
+        this.setState({
+            currentProduct:Product,
+            currentIndex:index,
+        });
+    }
+
+    removeAllProducts(){
+        ProductDataService.deleteAll()
+        .then(response => {
+            console.log(response.data);
+            this.refreshList();
+        });
+    }
+
+    render() {
+        let tb_data = this.state.list.map((product)=>{
+            return(
+                <tr key ={product.Name}>
+                    <td>{product.Name}</td>
+                    <td>{product.Category}</td>
+                    <td>{product.Description}</td>
+                    <td>{product.Price}</td>
+                    <td>{product.Quantity}</td>
+                    <td>
+                        <button className="btn btn-dark">Update</button>
+                    </td>
+                    <td>
+                        <button className="btn btn-dark">Remove</button>
+                    </td>
+                </tr>
+            )
+        })
+    return(
+        <div className = "container">
+            <table className ="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tb_data}
+                </tbody>
+            </table>
+        </div>
+ 
  )
 }
+}
+export default withRouter(ProductList);
 
-export default ProductList;
 
-
-
-  
