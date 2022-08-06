@@ -7,6 +7,10 @@ class UserDataService {
         return axios.get(USER_API_BASE_URL + "/userstreams/" + id)
     }
 
+    deleteStream(id) {
+        return axios.delete(USER_API_BASE_URL + "/deletestream/" + id)
+    }
+
 }
 
 export default new UserDataService();
