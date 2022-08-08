@@ -36,7 +36,7 @@ class MyStore extends Component {
                     lastName: user.lastName
                 }
             });
-            UserDataService.getAllUserStreams(user.id).then(response => {
+            UserDataService.getAllUserStreamsPending(user.id).then(response => {
                 this.setState({
                     streams: response.data
                 });
@@ -50,7 +50,6 @@ class MyStore extends Component {
     deleteStream(e) {
         UserDataService.deleteStream(e).then(response => {
             if (response.status === 200) {
-                // this.props.navigate('/mystore');
                 this.setState({
                     streams: this.state.streams.filter(stream => stream.id !== e)
                 });
@@ -60,7 +59,6 @@ class MyStore extends Component {
 
     editStream(e) {
         this.props.navigate('/updatestream/' + e);
-        // this.props.navigate(`/updatestream/${e}`);
     }
 
     render() {
@@ -68,7 +66,6 @@ class MyStore extends Component {
             <div className="container-fluid">
                 <div className="text-start">
                     <h1>Welcome, {this.state.currentUser.firstName}!</h1>
-                    <p>{this.state.currentUser.id}</p>
                     <br />
                     <br />
                     <br />
@@ -76,8 +73,8 @@ class MyStore extends Component {
                     <div className="row">
                         {
                             this.state.streams.map(
-                                stream => (
-                                    <Card className="mx-3" style={{ width: '18rem' }}>
+                                (stream, index) => (
+                                    <Card className="mx-3" style={{ width: '18rem' }} key={index}>
                                         <Card.Img variant="top" src="" />
                                         <Card.Body>
                                             <Card.Title>{stream.title}</Card.Title>
