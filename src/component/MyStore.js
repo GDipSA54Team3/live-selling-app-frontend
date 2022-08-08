@@ -17,11 +17,8 @@ class MyStore extends Component {
                 lastName: ""
             },
             streams: []
-
         }
-
     }
-
     componentDidMount() {
         if (sessionStorage.getItem('user') === null) {
             this.props.navigate('/home');
