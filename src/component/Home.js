@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import LoginDataService from "../Services/LoginDataService";
-import { withRouter } from '../withRouter';
+import { withRouter } from './withRouter';
 
 
 class Home extends Component {
