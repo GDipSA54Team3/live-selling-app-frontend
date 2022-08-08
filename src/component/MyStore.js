@@ -1,16 +1,16 @@
+import dateFormat from 'dateformat';
 import React, { Component } from 'react';
-import UserDataService from '../Services/UserDataService';
-import { withRouter } from '../withRouter';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom'
-import dateFormat from 'dateformat';
 import Stack from 'react-bootstrap/Stack';
+import UserDataService from '../Services/UserDataService';
+import { withRouter } from './withRouter';
 
 class MyStore extends Component {
     constructor(props) {
         super(props);
         this.deleteStream = this.deleteStream.bind(this);
+        this.editStream = this.editStream.bind(this);
 
         this.state = {
             currentUser: {
@@ -58,6 +58,11 @@ class MyStore extends Component {
         }).catch(e => { console.log(e) });
     }
 
+    editStream(e) {
+        this.props.navigate('/updatestream/' + e);
+        // this.props.navigate(`/updatestream/${e}`);
+    }
+
     render() {
         return (
             <div className="container-fluid">
@@ -67,7 +72,7 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <br />
-                    <h2>Scheduled streams:</h2>
+                    <h2>Scheduled streams: <button button onClick={() => this.props.navigate('/newstream')} className="btn btn-success">Add Stream</button></h2>
                     <div className="row">
                         {
                             this.state.streams.map(
@@ -82,7 +87,7 @@ class MyStore extends Component {
                                                 {dateFormat(stream.schedule, "HH:MM")}
                                             </Card.Text>
                                             <Stack direction="horizontal" gap={2}>
-                                                <Button variant="primary">Edit</Button>
+                                                <Button variant="primary" onClick={() => this.editStream(stream.id)}>Edit</Button>
                                                 <Button variant="primary" onClick={() => this.deleteStream(stream.id)}>Delete</Button>
                                             </Stack>
                                         </Card.Body>
@@ -103,27 +108,3 @@ class MyStore extends Component {
 }
 
 export default withRouter(MyStore);
-
-// function UpcomingStreams(stream) {
-//     if (stream.status === "PENDING") {
-//         return (
-//             <Card className="mx-3" style={{ width: '18rem' }}>
-//                 <Card.Img variant="top" src="" />
-//                 <Card.Body>
-//                     <Card.Title>{stream.title}</Card.Title>
-//                     <Card.Text>
-//                         {dateFormat(stream.schedule, "dd-mm-yyyy")}
-//                         <br />
-//                         {dateFormat(stream.schedule, "HH:MM")}
-//                     </Card.Text>
-//                     <Link to={"/streams/" + stream.id}>
-//                         <Button variant="primary">Edit</Button>
-//                     </Link>
-//                     <Button variant="primary" onClick={this.deleteStream(stream.id)}>Delete</Button>
-//                 </Card.Body>
-//             </Card>
-//         );
-//     } else {
-//         return null;
-//     }
-// }

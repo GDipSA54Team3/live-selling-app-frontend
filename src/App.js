@@ -6,6 +6,8 @@ import Dashboard from './component/Dashboard';
 import Home from './component/Home';
 import MyStore from './component/MyStore';
 import Logout from "./component/Logout";
+import NewStream from "./component/NewStream";
+import UpdateStream from "./component/UpdateStream";
 
 function App() {
   return (
@@ -47,6 +49,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/mystore" element={<MyStore />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/newstream" element={<NewStream />} />
+            <Route path="/updatestream/:streamid" element={<UpdateStream />} />
 
           </Routes>
         </div>

@@ -11,6 +11,18 @@ class UserDataService {
         return axios.delete(USER_API_BASE_URL + "/deletestream/" + id)
     }
 
+    addNewStream(id, body) {
+        return axios.post(USER_API_BASE_URL + "/addstream/" + id, body)
+    }
+
+    selectStream(id) {
+        return axios.get(USER_API_BASE_URL + "/streams/" + id)
+    }
+
+    editStream(id, body) {
+        return axios.put(USER_API_BASE_URL + "/editstream/" + id, body)
+    }
+
 }
 
 export default new UserDataService();
