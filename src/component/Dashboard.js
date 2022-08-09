@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DashboardDataService from '../Services/DashboardDataService';
 import {Rating} from 'react-simple-star-rating'
+import dateFormat from 'dateformat';
 
 
 class Dashboard extends Component {
@@ -10,8 +11,10 @@ class Dashboard extends Component {
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayChange = this.handleDayChange.bind(this);
         this.handleStreamingTimeChange = this.handleStreamingTimeChange.bind(this);
-        this.retrieveCharts = this.retrieveCharts.bind(this);       
-
+        this.retrieveCharts = this.retrieveCharts.bind(this);
+        this.retrievePopularity = this.retrievePopularity.bind(this); 
+        this.setSuggestion = this.setSuggestion.bind(this);
+        //this.getUpComingStreams =  this.getUpComingStreams.bind(this);        
         this.predict =  this.predict.bind(this);
         this.state = {
           currentUser: {
@@ -19,16 +22,23 @@ class Dashboard extends Component {
               firstName: "",
               lastName: ""
           },
+          popularityData : [],
           predictionData: [
             {order: ""},
             {viewer: ""}
             ], 
+          avgUserLikes:"9",
+          avgStreamerLikes:"9",
           rating :"",         
           productCategory:"",
           day:"",
           streamingTime:"",
           orderStatisticsMovAvg:"", 
-          orderStatisticsTime:""       
+          orderStatisticsTime:"",
+          polarityChart:"",
+          popsuggestion:"",
+          streams: [],
+          pendingStreamCount:""                 
       }              
     }
     componentDidMount() {      
@@ -42,41 +52,123 @@ class Dashboard extends Component {
                 day: "SUN",
                 streamingTime: "12am-6am",
                 orderStatisticsMovAvg:"",
-                orderStatisticsTime:"",   
+                orderStatisticsTime:"",                
                 currentUser: {
                     ...this.state.currentUser,
                     id: user.id,
                     firstName: user.firstName,
                     lastName: user.lastName
-                },              
+                },             
                 
             }, () => {
               this.retrieveRating();         
               this.predict();
+              this.retrievePopularity();
               this.retrieveCharts();
-            //   this.retrieveOrderStatisticsByDay();
+              this.getUpcomingStreams();                                      
             });
         }
-    }  
-    async retrieveCharts() {     
+    }
+    getUpcomingStreams(){
+        DashboardDataService.getAllUserStreamsPending(this.state.currentUser.id).then(response => {
+            this.setState({
+                streams: response.data                
+            });
+            console.log(response.data);
+        }).catch(e => {
+            console.log(e);
+        });
+        DashboardDataService.getAllPendingCount(this.state.currentUser.id).then(response => {
+            this.setState({
+                pendingStreamCount: response.data                
+            });
+            console.log(response.data);
+        }).catch(e => {
+            console.log(e);
+        });
+    }    
+    setSuggestion(){
+        let userLikes = parseInt(this.state.avgUserLikes)
+        let streamerLikes = parseInt(this.state.avgStreamerLikes)  
+        console.log(userLikes)
+        console.log(streamerLikes)
+        if (userLikes < streamerLikes) {
 
+            this.setState({
+                popsuggestion: "You are getting less Hearts than other streamers. "+
+                "Try to improve. Goodluck!"
+              });         
+        }
+        else if (userLikes == streamerLikes){
+            this.setState({
+                popsuggestion: "You are getting same number of Hearts as other streamers. "+ 
+                "Good job!. Check if you can improve further"
+              });         
+        }
+        else if (userLikes > streamerLikes){
+        
+            this.setState({
+                popsuggestion: "You are getting more Hearts than Other Streamers "+ 
+                "Good job!. Check if you can improve even further"
+              });         
+        }
+    }
+    async retrievePopularity(){
+        DashboardDataService.getUserAverageLikes(this.state.currentUser.id)
+        .then(response => {
+          this.setState({
+            avgUserLikes: response.data
+          });
+          console.log(response.data);
+      })
+     .catch(e => {
+          console.log(e);
+      });
+
+     await  DashboardDataService.getAverageStreamLikes()
+        .then(response => {
+          this.setState({
+            avgStreamerLikes: response.data
+          });            
+            console.log(response.data);
+            
+      }).catch(e => {
+          console.log(e);
+      });  
+
+      await this.setSuggestion()     
+
+    }
+     // popularity Chart
+    getPopularityChart(){
+        var userId = this.state.currentUser.id
+        var popChart = DashboardDataService.getpolarityChart(userId)        
+        this.setState({ polarityChart: popChart });
+        
+    }
+     // Order TimeSeries Chart 
+    getOrderMovingAverage(){
+        var movingAverage = DashboardDataService.getOrderMovingAverage()                  
+        this.setState({ orderStatisticsMovAvg: movingAverage });
+
+    }
+    // Number of orders by time chart
+    getOrderByTimePeriod(){
+        var bytime =    DashboardDataService.getOrderByTimePeriod()
+        this.setState({ orderStatisticsTime: bytime });
+    
+    }
+    async retrieveCharts() {    
         const delay = ms => new Promise(
             resolve => setTimeout(resolve, ms)
-          );
-        // Number of orders by time chart
-        var movingAverage =    <div>          
-            <img src='http://127.0.0.1:5000/charts?name=movavg' height = {300}
-                        alt=""></img>  
-            </div>;            
-        this.setState({ orderStatisticsMovAvg: movingAverage });
+          );  
+       
+        this.getPopularityChart()
         await delay(1000);
-        // Number of orders per Day chart
-        var bytime =    <div>          
-        <img src='http://127.0.0.1:5000/charts?name=bytime' height = {300}
-                    alt=""></img>  
-        </div>;
-        this.setState({ orderStatisticsTime: bytime });
-
+        this.getOrderMovingAverage();
+        await delay(1000);
+        this.getOrderByTimePeriod();
+        
     }
     showStar() {          
         return (
@@ -105,14 +197,11 @@ class Dashboard extends Component {
     handleStreamingTimeChange(e) {
         this.setState({streamingTime:e.target.value});              
     }
-    predict(){   
-    
-    
+    predict(){ 
     var bodyFormData = new FormData();
     bodyFormData.append('product_category', this.state.productCategory);
     bodyFormData.append('day', this.state.day);
     bodyFormData.append('time_period', this.state.streamingTime);
-
     DashboardDataService.getPrediction(bodyFormData)
         .then(response => {
             this.setState({
@@ -120,12 +209,7 @@ class Dashboard extends Component {
             });            
         }).catch(e => {
             console.log(e);
-        }); 
-        // console.log(this.state.predictionData); 
-        // console.log(this.state.predictionData[0]); 
-        // var x=this.state.predictionData[0];
-        // var y=x["order"];
-        // console.log(y);
+        });
     }    
     render() {
     
@@ -144,7 +228,8 @@ class Dashboard extends Component {
                         </div>
                         <div className="p-2">
                             <h4>My Popularity</h4>
-                            <p>under construction</p> 
+                            <p>{this.state.popsuggestion}</p>                                                                               
+                            <div>{this.state.polarityChart}</div>                     
                         </div> 
                         <div className="p-2">
                             <h4>Orders Pending Confirmation</h4>
@@ -154,12 +239,31 @@ class Dashboard extends Component {
 
                     <div className="d-flex flex-column"> 
                         <div>
-                            <h4>My Streaming Schedule</h4> 
+                            <h4>My Upcoming Streams</h4>
+                            <div>
+                            <table className="table">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Title</th>		
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.streams.map((item, i) => (
+                                    <tr key={i}>                                        
+                                        <td> {dateFormat(item.schedule, "dd-mm-yyyy")}</td>
+                                        <td>{dateFormat(item.schedule, "HH:MM")}</td>
+                                        <td>{item.title}</td>				
+                                    </tr>
+                            ))}
+                            </tbody>
+                            </table>
+                            </div>
+                            <p>{parseInt(this.state.pendingStreamCount) - this.state.streams.length} More.. <a href="http://localhost:3000/mystore">
+                                View All</a></p>  
                         </div>
-                        <div>
-                            <p>Table under construction</p> 
-                        </div>
-
+                       
                         <div>
                             <h4>Number of viewers & Orders Prediction</h4>
                             <br></br>  
@@ -213,7 +317,7 @@ class Dashboard extends Component {
                                 </div>
                             </div>                       
                     </div>
-                    <div className="d-flex flex-column"> 
+                    <div className="d-flex flex-column">
                         <div>
                             <h4>Platform Sales Statistics</h4> 
                         </div>
