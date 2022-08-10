@@ -4,7 +4,8 @@ const PREDICTION_API_BASE_URL = "http://127.0.0.1:5000/result";
 const USER_LIKES_API_BASE_URL = "http://127.0.0.1:8080/api/likes/userlikes/";
 const AVG_LIKE_API_BASE_URL = "http://127.0.0.1:8080/api/likes/avgstreamlikes/";
 const CHART_API_BASE_URL = "http://127.0.0.1:5000/"
-const STREAM_API_BASE_URL = "http://localhost:8080/api/user"
+const STREAM_API_BASE_URL = "http://127.0.0.1:8080/api/user/"
+const ORDER_API_BASE_URL = "http://127.0.0.1:8080/api/orders/"
 
 class DashboardDataService {  
     getUserAverageRating(userId){
@@ -55,11 +56,15 @@ class DashboardDataService {
         return bytime 
     }
     getAllUserStreamsPending(userId) {
-        return axios.get(STREAM_API_BASE_URL + "/upcomingstreams/" + userId)
+        return axios.get(STREAM_API_BASE_URL + "upcomingstreams/" + userId)
     }
-    getAllPendingCount(userId){
-        return axios.get(STREAM_API_BASE_URL + "/upcomingstreamcount/" + userId)
+    getAllPendingStreamCount(userId){
+        return axios.get(STREAM_API_BASE_URL + "upcomingstreamcount/" + userId)
+    }    
+    getPendingOrderCount(userId){
+        var data = axios.get(ORDER_API_BASE_URL + "pendingorders/" + userId)
+        console.log(data)
+        return data
     }
-
 }
 export default new DashboardDataService();
