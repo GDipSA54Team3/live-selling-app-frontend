@@ -11,10 +11,10 @@ class Dashboard extends Component {
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayChange = this.handleDayChange.bind(this);
         this.handleStreamingTimeChange = this.handleStreamingTimeChange.bind(this);
-        this.retrieveCharts = this.retrieveCharts.bind(this);
-        this.retrievePopularity = this.retrievePopularity.bind(this); 
-        this.setSuggestion = this.setSuggestion.bind(this);
-        //this.getUpComingStreams =  this.getUpComingStreams.bind(this);        
+        //this.retrieveCharts = this.retrieveCharts.bind(this);
+        //this.retrievePopularity = this.retrievePopularity.bind(this); 
+        //this.setSuggestion = this.setSuggestion.bind(this);
+        //this.getPendingOrderCount =  this.getPendingOrderCount.bind(this);        
         this.predict =  this.predict.bind(this);
         this.state = {
           currentUser: {
@@ -38,7 +38,8 @@ class Dashboard extends Component {
           polarityChart:"",
           popsuggestion:"",
           streams: [],
-          pendingStreamCount:""                 
+          pendingStreamCount:"", 
+          pendingOrderCount:"a"                
       }              
     }
     componentDidMount() {      
@@ -52,7 +53,8 @@ class Dashboard extends Component {
                 day: "SUN",
                 streamingTime: "12am-6am",
                 orderStatisticsMovAvg:"",
-                orderStatisticsTime:"",                
+                orderStatisticsTime:"",
+                pendingOrderCount:"b",                 
                 currentUser: {
                     ...this.state.currentUser,
                     id: user.id,
@@ -65,9 +67,24 @@ class Dashboard extends Component {
               this.predict();
               this.retrievePopularity();
               this.retrieveCharts();
-              this.getUpcomingStreams();                                      
+              this.getUpcomingStreams();
+              this.getPendingOrderCount();
+
             });
         }
+    }
+    getPendingOrderCount(){
+
+        DashboardDataService.getPendingOrderCount(this.state.currentUser.id)
+        .then(response => {
+            this.setState({
+                pendingOrderCount: response.data
+            });
+            console.log(this.state.pendingOrderCount);
+        }).catch(e => {
+            console.log(e);
+        });
+
     }
     getUpcomingStreams(){
         DashboardDataService.getAllUserStreamsPending(this.state.currentUser.id).then(response => {
@@ -78,7 +95,7 @@ class Dashboard extends Component {
         }).catch(e => {
             console.log(e);
         });
-        DashboardDataService.getAllPendingCount(this.state.currentUser.id).then(response => {
+        DashboardDataService.getAllPendingStreamCount(this.state.currentUser.id).then(response => {
             this.setState({
                 pendingStreamCount: response.data                
             });
@@ -233,7 +250,7 @@ class Dashboard extends Component {
                         </div> 
                         <div className="p-2">
                             <h4>Orders Pending Confirmation</h4>
-                            <p>under construction</p> 
+                            <p>{this.state.pendingOrderCount}</p> 
                         </div> 
                     </div> 
 
