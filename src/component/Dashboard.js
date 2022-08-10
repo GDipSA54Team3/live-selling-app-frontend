@@ -11,10 +11,10 @@ class Dashboard extends Component {
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayChange = this.handleDayChange.bind(this);
         this.handleStreamingTimeChange = this.handleStreamingTimeChange.bind(this);
-        //this.retrieveCharts = this.retrieveCharts.bind(this);
-        //this.retrievePopularity = this.retrievePopularity.bind(this); 
-        //this.setSuggestion = this.setSuggestion.bind(this);
-        //this.getPendingOrderCount =  this.getPendingOrderCount.bind(this);        
+        this.retrieveCharts = this.retrieveCharts.bind(this);
+        this.retrievePopularity = this.retrievePopularity.bind(this); 
+        this.setSuggestion = this.setSuggestion.bind(this);
+        this.getPendingOrderCount =  this.getPendingOrderCount.bind(this);        
         this.predict =  this.predict.bind(this);
         this.state = {
           currentUser: {
@@ -27,8 +27,8 @@ class Dashboard extends Component {
             {order: ""},
             {viewer: ""}
             ], 
-          avgUserLikes:"9",
-          avgStreamerLikes:"9",
+          avgUserLikes:"0",
+          avgStreamerLikes:"0",
           rating :"",         
           productCategory:"",
           day:"",
@@ -39,7 +39,7 @@ class Dashboard extends Component {
           popsuggestion:"",
           streams: [],
           pendingStreamCount:"", 
-          pendingOrderCount:"a"                
+          pendingOrderCount:""                
       }              
     }
     componentDidMount() {      
@@ -54,7 +54,7 @@ class Dashboard extends Component {
                 streamingTime: "12am-6am",
                 orderStatisticsMovAvg:"",
                 orderStatisticsTime:"",
-                pendingOrderCount:"b",                 
+                pendingOrderCount:"",                 
                 currentUser: {
                     ...this.state.currentUser,
                     id: user.id,
@@ -109,14 +109,21 @@ class Dashboard extends Component {
         let streamerLikes = parseInt(this.state.avgStreamerLikes)  
         console.log(userLikes)
         console.log(streamerLikes)
-        if (userLikes < streamerLikes) {
+        if (userLikes == 0 ) {
+
+            this.setState({
+                popsuggestion: "You haven't received any reactions yet. "+
+                "Goodluck on your next stream!"
+              }); 
+        }
+        else if (userLikes < streamerLikes && userLikes != 0) {
 
             this.setState({
                 popsuggestion: "You are getting less Hearts than other streamers. "+
                 "Try to improve. Goodluck!"
               });         
         }
-        else if (userLikes == streamerLikes){
+        else if (userLikes == streamerLikes && userLikes != 0){
             this.setState({
                 popsuggestion: "You are getting same number of Hearts as other streamers. "+ 
                 "Good job!. Check if you can improve further"
@@ -130,7 +137,7 @@ class Dashboard extends Component {
               });         
         }
     }
-    async retrievePopularity(){
+    retrievePopularity(){
         DashboardDataService.getUserAverageLikes(this.state.currentUser.id)
         .then(response => {
           this.setState({
@@ -142,18 +149,21 @@ class Dashboard extends Component {
           console.log(e);
       });
 
-     await  DashboardDataService.getAverageStreamLikes()
+    DashboardDataService.getAverageStreamLikes()
         .then(response => {
           this.setState({
             avgStreamerLikes: response.data
-          });            
+          },() => {
+            this.setSuggestion();    
+            }
+          );            
             console.log(response.data);
             
       }).catch(e => {
           console.log(e);
       });  
 
-      await this.setSuggestion()     
+       
 
     }
      // popularity Chart
