@@ -23,6 +23,10 @@ class UserDataService {
         return axios.put(USER_API_BASE_URL + "/editstream/" + id, body)
     }
 
+    addNewUser(channelName, body) {
+        return axios.post(USER_API_BASE_URL + "/register/" + channelName, body)
+    }
+
 }
 
 export default new UserDataService();

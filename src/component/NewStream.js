@@ -77,7 +77,7 @@ class NewStream extends Component {
                 <div className="text-start">
                     <h2>Add New Stream</h2>
                     <br/>
-                    <div class="mb-3">
+                    <div className="mb-3">
                         <label htmlFor="Title">Title:</label>
                         <input
                             type="text"
@@ -89,7 +89,7 @@ class NewStream extends Component {
                             name="title"
                         />
                     </div>
-                    <div class="mb-3">
+                    <div className="mb-3">
                         <label htmlFor="schedule">Schedule:</label>
                         <input
                             type="datetime-local"
