@@ -98,7 +98,7 @@ class UpdateStream extends Component {
                 <div className="text-start">
                     <h2>Edit Stream</h2>
                     <br />
-                    <div class="mb-3">
+                    <div className="mb-3">
                         <label htmlFor="Title">Title:</label>
                         <input
                             type="text"
@@ -110,7 +110,7 @@ class UpdateStream extends Component {
                             name="title"
                         />
                     </div>
-                    <div class="mb-3">
+                    <div className="mb-3">
                         <label htmlFor="schedule">Schedule:</label>
                         <input
                             type="datetime-local"

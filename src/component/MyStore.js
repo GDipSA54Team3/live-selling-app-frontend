@@ -69,7 +69,7 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <br />
-                    <h2>Scheduled streams: <button button onClick={() => this.props.navigate('/newstream')} className="btn btn-success">Add Stream</button></h2>
+                    <h2>Scheduled streams: <button onClick={() => this.props.navigate('/newstream')} className="btn btn-success">Add Stream</button></h2>
                     <div className="row">
                         {
                             this.state.streams.map(

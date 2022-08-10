@@ -9,6 +9,7 @@ class Home extends Component {
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.submit = this.submit.bind(this);
+        this.register = this.register.bind(this);
 
         this.state = {
             username: "",
@@ -53,7 +54,9 @@ class Home extends Component {
         });
     }
 
-
+    register() {
+        this.props.navigate('/register');
+    }
 
     render() {
         return (
@@ -85,8 +88,11 @@ class Home extends Component {
                             name="password"
                         />
                     </div>
-                    <button onClick={this.submit} className="btn btn-success">
+                    <button onClick={this.submit} className="btn btn-success my-2">
                         Sign in
+                    </button>
+                    <button onClick={this.register} className="btn btn-outline-success ms-2">
+                        Register
                     </button>
                 </div>
             </div>
