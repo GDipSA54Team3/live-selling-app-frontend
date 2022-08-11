@@ -166,8 +166,6 @@ class MyStore extends Component {
                                         <td>{Number(item.quantity)}</td>
                                         <td>
                                             <button className="btn btn-dark">Update</button>
-                                        </td>
-                                        <td>
                                             <button className="btn btn-dark">Remove</button>
                                         </td>
                                     </tr>
