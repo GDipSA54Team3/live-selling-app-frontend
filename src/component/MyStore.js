@@ -24,14 +24,7 @@ class MyStore extends Component {
             },
             streams: [],
             products: [],
-            currentProduct: {
-                id: "",
-                name: "",
-                category: "",
-                description: "",
-                price: 0.00,
-                quantity: 0,
-            },
+           
         }
 
     }
