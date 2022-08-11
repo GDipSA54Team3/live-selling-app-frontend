@@ -10,8 +10,8 @@ class ProductService{
 
     }
 
-    addProduct(product){
-        return axios.post(PRODUCT_API_BASE_URL + "/addtostore" , product);
+    addProduct(id, product){
+        return axios.post(PRODUCT_API_BASE_URL + "/addtostore/" +id , product);
     }
 
     getProductById(id){
