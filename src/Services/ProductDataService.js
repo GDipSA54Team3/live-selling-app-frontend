@@ -1,36 +1,32 @@
 import axios from "axios";
 
-const PRODUCT_API_BASE_URL = "";
+const PRODUCT_API_BASE_URL = "http://localhost:8080/api/product";
 
-class ProductService{
+class ProductService {
 
-    getProducts(){
-        return axios.get(PRODUCT_API_BASE_URL);
+    getProductsByUserId(id) {
+        return axios.get(PRODUCT_API_BASE_URL + "/channelproducts/" + id);
     }
 
-    addProduct(product){
-        return axios.post(PRODUCT_API_BASE_URL,"/addtostore/" + product);
+    addToStore(id, product) {
+        return axios.post(PRODUCT_API_BASE_URL + "/addtostore/" + id, product);
     }
 
-    getProductById(id){
-        return axios.get(PRODUCT_API_BASE_URL + "/" +id);
+    findProductById(id) {
+        return axios.get(PRODUCT_API_BASE_URL + "/selectproduct/" + id);
     }
 
-    findByName(name){
-        return axios.get(PRODUCT_API_BASE_URL + "?name=" +name);
+    findByName(name) {
+        return axios.get(PRODUCT_API_BASE_URL + "/productname/" + name);
     }
 
-    updateProduct(id, product){
-        return axios.get(PRODUCT_API_BASE_URL + "/edit/" +id, product);
+    editProduct(id, product) {
+        return axios.put(PRODUCT_API_BASE_URL + "/editproduct/" + id, product);
     }
 
-    deleteProduct(id){
-        return axios.delete(PRODUCT_API_BASE_URL + "/"+id);
-    }
-
-    deleteAll(){
-        return axios.delete(PRODUCT_API_BASE_URL);
+    deleteProduct(id) {
+        return axios.delete(PRODUCT_API_BASE_URL + "/products/" + id);
     }
 }
 
-export default new ProductService;
+export default new ProductService();

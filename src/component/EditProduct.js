@@ -1,147 +1,223 @@
-import React,{Component} from 'react';
-import ProductDataService from '../Services/ProductDataService';
+import React, { Component } from "react";
+import ProductDataService from "../Services/ProductDataService";
+import { withRouter } from './withRouter';
 
-export default class EditProduct extends Component{
-    constructor(props){
+class EditProduct extends Component {
+    constructor(props) {
         super(props);
-        this.onChangeProductId = this.onChangeProductId.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeCategory = this.onChangeCategory.bind(this);
         this.onChangeDescription = this.onChangeDescription.bind(this);
-        this.onChangePrice = this.onChangePrice.bind(this);  
-        this.onChangeQuantity = this.onChangeQuantity.bind(this); 
-        this.getProduct = this.getProduct.bind(this);
-        this.updateProduct = this. updateProduct.bind(this);
-        this.deleteProduct = this.deleteProduct.bind(this);
+        this.onChangePrice = this.onChangePrice.bind(this);
+        this.onChangeQuantity = this.onChangeQuantity.bind(this);
+        this.submit = this.submit.bind(this);
 
         this.state = {
-            currentProduct:{
-                id: null,
-                productId: "",
+            currentProduct: {
+                id: "",
                 name: "",
-                category: "",
+                cat: "",
                 description: "",
-                price: 0.00,
-                quantity: 0,
+                price: 0.0,
+                quantity: 0
             },
-            message: ""
-        };
-    }
-    componentDidMount(){
-        this.getProduct(this.props.match.params.id);
+            currentUser: {
+                id: "",
+                firstName: "",
+                lastName: ""
+            },
+        }
     }
 
-    onChangeProductId(p){
-        const productId = p.target.value;
-
-        this.setState(function (prevState){
-            return{
-                currentProduct:{
-                    ...prevState.currentProduct,
-                    productId:productId
+    componentDidMount() {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        this.setState(function (prevState) {
+            return {
+                currentUser: {
+                    ...prevState.currentUser,
+                    id: user.id,
+                    firstName: user.firstName,
+                    lastName: user.lastName
                 }
-            };
+            }
         });
-    }
-    onChangeName(p){
-        const name = p.target.value;
-
-        this.setState(function (prevState){
-            return{
-                currentProduct:{
-                    ...prevState.currentProduct,
-                    name:name
-                }
-            };
-        });
-    }
-
-    onChangeCategory(p){
-        const category = p.target.value;
-
-        this.setState(function (prevState){
-            return{
-                currentProduct:{
-                    ...prevState.currentProduct,
-                    category:category
-                }
-            };
-        });
-    }
-
-    onChangeDescription(p){
-        const description = p.target.value;
-
-        this.setState(function (prevState){
-            return{
-                currentProduct:{
-                    ...prevState.currentProduct,
-                    description:description
-                }
-            };
-        });
-    }
-    onChangePrice(p){
-        const price = p.target.value;
-
-        this.setState(function (prevState){
-            return{
-                currentProduct:{
-                    ...prevState.currentProduct,
-                    price:price
-                }
-            };
-        });
-    }
-    onChangeQuantity(p){
-        const quantity = p.target.value;
-
-        this.setState(function (prevState){
-            return{
-                currentProduct:{
-                    ...prevState.currentProduct,
-                    quantity:quantity
-                }
-            };
-        });
-    }
-    getProduct(id){
-        ProductDataService.getProductById(id)
-        .then(response => {
-            this.setState({
-                currentProduct:response.data
-            });
-            console.log(response.data)
-        })
-        .catch(e =>{
-            console.log(e)
-        });
-    }
-    updateProduct(){
-        ProductDataService.updateProduct(
-            this.state.currentProduct.id,
-            this.state.currentProduct
-        )
-        .then(response => {
-            console.log(response.data);
-            this.setState({
-                message:"The product was updated successfully!"
-            });
-        })
-        .catch(e =>{
-            console.log(e)
-        });
-    }
-    deleteProduct(){
-        ProductDataService.deleteProduct(
-            this.state.currentProduct.id)
-        .then(response => {
-            console.log(response.data);
-            this.props.history.push('/products')
-        })
-        .catch(e =>{
+        ProductDataService.findProductById(this.props.params.productid).then(response => {
+            if (response.status === 200) {
+                this.setState(function (prevState) {
+                    return {
+                        currentProduct: {
+                            ...prevState.currentProduct,
+                            id: response.data.id,
+                            name: response.data.name,
+                            cat: response.data.category,
+                            description: response.data.description,
+                            price: response.data.price,
+                            quantity: response.data.quantity
+                        }
+                    }
+                });
+                console.log(response.data);
+            }
+        }).catch(e => {
             console.log(e);
         });
     }
 
+    onChangeName(p) {
+        this.setState(function (prevState) {
+            return {
+                currentProduct: {
+                    ...prevState.currentProduct,
+                    name: p.target.value
+                }
+            }
+        });
+    }
+
+    onChangeCategory(p) {
+        this.setState(function (prevState) {
+            return {
+                currentProduct: {
+                    ...prevState.currentProduct,
+                    cat: p.target.value
+                }
+            }
+        });
+    }
+
+    onChangeDescription(p) {
+        this.setState(function (prevState) {
+            return {
+                currentProduct: {
+                    ...prevState.currentProduct,
+                    description: p.target.value
+                }
+            }
+        });
+    }
+
+    onChangePrice(p) {
+        this.setState(function (prevState) {
+            return {
+                currentProduct: {
+                    ...prevState.currentProduct,
+                    price: p.target.value
+                }
+            }
+        });
+    }
+
+    onChangeQuantity(p) {
+        this.setState(function (prevState) {
+            return {
+                currentProduct: {
+                    ...prevState.currentProduct,
+                    quantity: p.target.value
+                }
+            }
+        });
+    }
+
+    submit() {
+        if (this.state.currentProduct.name !== "" && this.state.currentProduct.description !== "" &&
+        this.state.currentProduct.price !== 0) {
+            ProductDataService.editProduct(this.state.currentProduct.id, this.state.currentProduct).then(response => {
+                if (response.status === 200) {
+                    this.props.navigate('/mystore');
+                }
+            }).catch(e => {
+                console.log(e);
+            });
+        }
+    }
+
+    render() {
+        return (
+            <div className="container-fluid">
+                <div className="text-start">
+                    <h2>Update Product</h2>
+                    <br/>
+                    <div className="form-group mb-3" >
+                        <label htmlFor="name">
+                            Enter Name:
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="name"
+                            required
+                            value={this.state.currentProduct.name}
+                            onChange={this.onChangeName}
+                        />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="category">
+                            Enter Category:
+                        </label>
+                        <select className="form-select" aria-label="Default select example" name="product_category"
+                            value={this.state.currentProduct.cat} onChange={this.onChangeCategory} >
+                            <option value="CLOTHING" >Clothing</option>
+                            <option value="FOOD">Food</option>
+                            <option value="APPLIANCES">Home Appliances</option>
+                            <option value="FURNITURES">Furnitures</option>
+                            <option value="TECHNOLOGY">Electronics Devices</option>
+                            <option value="BABY">Baby Items and Toys</option>
+                            <option value="HEALTH">Health and Beauty</option>
+                            <option value="SPORTS">Sports Items</option>
+                            <option value="GROCERIES">Groceries</option>
+                            <option value="OTHERS">Others</option>
+                        </select>
+                    </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="price">
+                            Enter Price:
+                        </label>
+                        <div className="input-group">
+                            <span className="input-group-text col-1">S$</span>
+                            <input
+                                type="number"
+                                step=".01"
+                                className="form-control"
+                                id="Price"
+                                required
+                                value={this.state.currentProduct.price}
+                                onChange={this.onChangePrice}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="description">
+                            Enter Product Description:
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="Description"
+                            required
+                            value={this.state.currentProduct.description}
+                            onChange={this.onChangeDescription}
+                        />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="quantity">
+                            Enter Quantity:
+                        </label>
+                        <input
+                            type="number"
+                            max="100"
+                            className="form-control"
+                            id="Quantity"
+                            value={this.state.currentProduct.quantity}
+                            onChange={this.onChangeQuantity}
+                        />
+                    </div>
+                    <button className="btn btn-dark" onClick={this.submit}>
+                        Update
+                    </button>
+                </div>
+            </div>
+        );
+    }
 }
+
+export default withRouter(EditProduct)

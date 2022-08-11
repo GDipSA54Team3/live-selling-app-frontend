@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import UserDataService from '../Services/UserDataService';
+import ProductDataService from '../Services/ProductDataService';
 import { withRouter } from './withRouter';
 
 class MyStore extends Component {
@@ -11,6 +12,10 @@ class MyStore extends Component {
         super(props);
         this.deleteStream = this.deleteStream.bind(this);
         this.editStream = this.editStream.bind(this);
+        this.retrieveProducts = this.retrieveProducts.bind(this);
+        this.refreshList = this.refreshList.bind(this);
+        this.updateProduct = this.updateProduct.bind(this);
+        this.deleteProduct = this.deleteProduct.bind(this);
 
         this.state = {
             currentUser: {
@@ -19,6 +24,8 @@ class MyStore extends Component {
                 lastName: ""
             },
             streams: [],
+            products: [],
+           
         }
 
     }
@@ -46,7 +53,49 @@ class MyStore extends Component {
             }).catch(e => {
                 console.log(e);
             });
+
+            ProductDataService.getProductsByUserId(user.id).then(response => {
+                this.setState({
+                    products: response.data
+                });
+                console.log(response.data);
+            }).catch(e => {
+                console.log(e);
+            });
         }
+    }
+    retrieveProducts() {
+        ProductDataService.getProducts()
+            .then(response => {
+                this.setState({
+                    products: response.data
+                });
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+    refreshList() {
+        this.retrieveProducts();
+        this.setState({
+            currentProduct: null,
+            currentIndex: -1
+        });
+    }
+
+    updateProduct(p) {
+        this.props.navigate('/updateproduct/' + p);
+    }
+
+    deleteProduct(e) {
+        ProductDataService.deleteProduct(e).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    products: this.state.products.filter(product => product.id !== e)
+                });
+            }
+        }).catch(e => { console.log(e) });
     }
 
     deleteStream(e) {
@@ -64,6 +113,7 @@ class MyStore extends Component {
     }
 
     render() {
+
         return (
             <div className="container-fluid">
                 <div className="text-start">
@@ -98,8 +148,38 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <br />
-                    <h2>List Of Products:</h2>
-
+                    <h2>List Of Products: <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-success">Add Product</button></h2>
+                    <div className="container">
+                        <table className="table table-striped">
+                            <thead className="table-dark">
+                             <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Actions</th>
+                             </tr>
+                             </thead>
+                                <tbody>
+                                {this.state.products.map((item, i) => (
+                                    <tr key={i}>
+                                        <td> {item.name}</td>
+                                        <td>{item.category}</td>
+                                        <td>{item.description}</td>
+                                        <td>{item.price}</td>
+                                        <td>{item.quantity}</td>
+                                        <td>
+                                            <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}>Update</button>
+                                            <button className="btn btn-dark ms-2" onClick={() => this.deleteProduct(item.id)}>Remove</button>
+                                        </td>
+                                    </tr>
+                                ))
+                                }
+                                 </tbody>
+                          
+                        </table>
+                    </div>
                 </div>
             </div>
         );
