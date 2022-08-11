@@ -9,6 +9,8 @@ import Logout from "./component/Logout";
 import NewStream from "./component/NewStream";
 import UpdateStream from "./component/UpdateStream";
 import RegisterUser from "./component/RegisterUser";
+import AddProduct from "./component/AddProduct";
+import EditProduct from "./component/EditProduct";
 
 function App() {
   return (
@@ -53,6 +55,8 @@ function App() {
             <Route path="/newstream" element={<NewStream />} />
             <Route path="/updatestream/:streamid" element={<UpdateStream />} />
             <Route path="/register" element={<RegisterUser />} />
+            <Route path="/addproduct" element={<AddProduct />} />
+            <Route path="/updateproduct/:productid" element={<EditProduct />} />
           </Routes>
         </div>
       </Router>
