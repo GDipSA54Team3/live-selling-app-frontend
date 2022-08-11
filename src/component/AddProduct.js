@@ -89,20 +89,79 @@ export default class AddProduct extends Component{
     }
    
     render() {
-    return(
-        <> <div>
-            <h4>What do you want to add?</h4>
-            </div>
-         <div class="col-50">
-
-         </div>
-         <div class="col-75">
-
-         </div>
-         </>
-         
-         
-           
-        )
+        return(
+            <> <div>
+                (currentProduct ? (
+                    <h4>What do you want to add?</h4>
+                </div>
+             <div class="col-75">
+             <div className="form-group">
+                <label htmlFor="name">
+                   Enter: Name
+                </label>
+                <input
+                    type="text"
+                    className = "form-control"
+                    id="name"
+                    value ={this.state.name}
+                    onChange={this.onChangeName}
+                    />
+                    </div>
+                    <div className="form-group">
+                <label htmlFor="category">
+                  Enter Category:
+                </label>
+                <input
+                    type="text"
+                    className = "form-control"
+                    id="Category"
+                    value ={this.state.category}
+                    onChange={this.onChangeCategory}
+                    />
+                    </div>
+                    <div className="form-group">
+                    <label htmlFor="price">
+                 Enter Price:
+                </label>
+                    <input
+                    type="text"
+                    className = "form-control"
+                    id="Price"
+                    value ={this.state.price}
+                    onChange={this.onChangePrice}
+                    />
+                    <div className="form-group">
+                    <label htmlFor="price">
+                  Enter Product Description:
+                </label>
+                    <input
+                    type="text"
+                    className = "form-control"
+                    id="Price"
+                    value ={this.state.description}
+                    onChange={this.onChangeDescription}
+                    />
+                    </div>
+                    <div className="form-group">
+                    <label htmlFor="price">
+                  Enter Quantity:
+                </label>
+                    <input
+                    type="int"
+                    className = "form-control"
+                    id="Quantity"
+                    value ={this.state.quantity}
+                    onChange={this.onChangeQuantity}
+                    />
+                    </div>
+                </div>
+                )
+                )
+                    <button onClick={this.saveProduct} className="btn-btn-dark">
+                        Add It!
+                    </button>
+             </div>
+             </>
+             )  
+        }
     }
-}

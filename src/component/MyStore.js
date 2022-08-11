@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import UserDataService from '../Services/UserDataService';
+import ProductDataService from '../Services/ProductDataService';
 import { withRouter } from './withRouter';
 
 class MyStore extends Component {
@@ -11,6 +12,9 @@ class MyStore extends Component {
         super(props);
         this.deleteStream = this.deleteStream.bind(this);
         this.editStream = this.editStream.bind(this);
+        this.retrieveProducts = this.retrieveProducts.bind(this);
+        this.refreshList = this.refreshList.bind(this);
+        this.setActiveProduct = this.setActiveProduct.bind(this);
 
         this.state = {
             currentUser: {
@@ -19,6 +23,15 @@ class MyStore extends Component {
                 lastName: ""
             },
             streams: [],
+            products: [],
+            currentProduct: {
+                id: "",
+                name: "",
+                category: "",
+                description: "",
+                price: 0.00,
+                quantity: 0,
+            },
         }
 
     }
@@ -28,14 +41,19 @@ class MyStore extends Component {
             this.props.navigate('/home');
         } else {
             const user = JSON.parse(sessionStorage.getItem('user'));
+
             this.setState({
                 currentUser: {
                     ...this.state.currentUser,
                     id: user.id,
                     firstName: user.firstName,
                     lastName: user.lastName
-                }
-            });
+                },
+
+            })
+
+
+
             UserDataService.getAllUserStreamsPending(user.id).then(response => {
                 this.setState({
                     streams: response.data
@@ -44,7 +62,42 @@ class MyStore extends Component {
             }).catch(e => {
                 console.log(e);
             });
+
+            ProductDataService.getProducts().then(response => {
+                this.setState({
+                    products: response.data
+                });
+                console.log(response.data);
+            }).catch(e => {
+                console.log(e);
+            });
         }
+    }
+    retrieveProducts() {
+        ProductDataService.getProducts()
+            .then(response => {
+                this.setState({
+                    products: response.data
+                });
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+    refreshList() {
+        this.retrieveProducts();
+        this.setState({
+            currentProduct: null,
+            currentIndex: -1
+        });
+    }
+
+    setActiveProduct(Product, index) {
+        this.setState({
+            currentProduct: Product,
+            currentIndex: index,
+        });
     }
 
     deleteStream(e) {
@@ -62,6 +115,7 @@ class MyStore extends Component {
     }
 
     render() {
+
         return (
             <div className="container-fluid">
                 <div className="text-start">
@@ -96,8 +150,41 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <br />
-                    <h2>List Of Products:</h2>
-
+                    <h2>List Of Products: <button button onClick={() => this.props.navigate('/addproduct')} className="btn btn-success">Add Product</button></h2>
+                    <div className="container">
+                        <table className="table table-striped">
+                            <thead className="table-dark">
+                             <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Actions</th>
+                             </tr>
+                             </thead>
+                                <tbody>
+                                {this.state.products.map((item, i) => (
+                                    <tr key={i}>
+                                        <td> {String(item.name)}</td>
+                                        <td>{String(item.category)}</td>
+                                        <td>{String(item.description)}</td>
+                                        <td>{Number(item.price)}</td>
+                                        <td>{Number(item.quantity)}</td>
+                                        <td>
+                                            <button className="btn btn-dark">Update</button>
+                                        </td>
+                                        <td>
+                                            <button className="btn btn-dark">Remove</button>
+                                        </td>
+                                    </tr>
+                                
+                                ))
+                                }
+                                 </tbody>
+                          
+                        </table>
+                    </div>
                 </div>
             </div>
         );

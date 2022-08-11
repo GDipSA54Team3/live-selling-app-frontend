@@ -144,4 +144,81 @@ export default class EditProduct extends Component{
         });
     }
 
-}
+    render() {
+        return(
+            <> <div>
+                (currentProduct ? (
+                    <h4>What do you want to add?</h4>
+                </div>
+             <div class="col-75">
+             <div className="form-group">
+                <label htmlFor="name">
+                   Enter: Name
+                </label>
+                <input
+                    type="text"
+                    className = "form-control"
+                    id="name"
+                    value ={currentProduct.name}
+                    onChange={this.onChangeName}
+                    />
+                    </div>
+                    <div className="form-group">
+                <label htmlFor="category">
+                  Enter Category:
+                </label>
+                <input
+                    type="text"
+                    className = "form-control"
+                    id="Category"
+                    value ={currentProduct.category}
+                    onChange={this.onChangeCategory}
+                    />
+                    </div>
+                    <div className="form-group">
+                    <label htmlFor="price">
+                 Enter Price:
+                </label>
+                    <input
+                    type="text"
+                    className = "form-control"
+                    id="Price"
+                    value ={currentProduct.price}
+                    onChange={this.onChangePrice}
+                    />
+                    <div className="form-group">
+                    <label htmlFor="price">
+                  Enter Product Description:
+                </label>
+                    <input
+                    type="text"
+                    className = "form-control"
+                    id="Price"
+                    value ={currentProduct.description}
+                    onChange={this.onChangeDescription}
+                    />
+                    </div>
+                    <div className="form-group">
+                    <label htmlFor="price">
+                  Enter Quantity:
+                </label>
+                    <input
+                    type="int"
+                    className = "form-control"
+                    id="Quantity"
+                    value ={currentProduct.quantity}
+                    onChange={this.onChangeQuantity}
+                    />
+                    </div>
+                </div>
+                )
+                )
+                <button onClick={this.updateProduct} className="btn-btn-dark">
+                    Add It!
+                </button>
+             </div>
+             </>
+             )  
+        }
+    }
+
