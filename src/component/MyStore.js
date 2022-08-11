@@ -28,12 +28,14 @@ class MyStore extends Component {
             this.props.navigate('/home');
         } else {
             const user = JSON.parse(sessionStorage.getItem('user'));
-            this.setState({
-                currentUser: {
-                    ...this.state.currentUser,
-                    id: user.id,
-                    firstName: user.firstName,
-                    lastName: user.lastName
+            this.setState(function (prevState) {
+                return {
+                    currentUser: {
+                        ...prevState.currentUser,
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    }
                 }
             });
             UserDataService.getAllUserStreamsPending(user.id).then(response => {
