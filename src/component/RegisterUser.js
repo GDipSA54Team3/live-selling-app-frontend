@@ -209,8 +209,11 @@ class RegisterUser extends Component {
                             name="passwordveri"
                         />
                     </div>
-                    <button onClick={this.submit} className="btn btn-success my-2">
+                    <button onClick={this.submit} className="btn btn-dark my-2">
                         Submit
+                    </button>
+                    <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}>
+                        Back
                     </button>
                 </div>
             </div>

@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
+import OrderDataService from '../Services/OrderDataService';
 import UserDataService from '../Services/UserDataService';
-import ProductDataService from '../Services/ProductDataService';
 import { withRouter } from './withRouter';
 
 class MyStore extends Component {
@@ -12,10 +12,10 @@ class MyStore extends Component {
         super(props);
         this.deleteStream = this.deleteStream.bind(this);
         this.editStream = this.editStream.bind(this);
-        this.retrieveProducts = this.retrieveProducts.bind(this);
-        this.refreshList = this.refreshList.bind(this);
-        this.updateProduct = this.updateProduct.bind(this);
-        this.deleteProduct = this.deleteProduct.bind(this);
+        this.getOrderList = this.getOrderList.bind(this);
+        // this.selectOrder = this.selectOrder.bind(this);
+        // this.acceptOrder = this.acceptOrder.bind(this);
+        // this.rejectOrder = this.rejectOrder.bind(this);
 
         this.state = {
             currentUser: {
@@ -24,8 +24,7 @@ class MyStore extends Component {
                 lastName: ""
             },
             streams: [],
-            products: [],
-           
+            orders: [],
         }
 
     }
@@ -53,49 +52,8 @@ class MyStore extends Component {
             }).catch(e => {
                 console.log(e);
             });
-
-            ProductDataService.getProductsByUserId(user.id).then(response => {
-                this.setState({
-                    products: response.data
-                });
-                console.log(response.data);
-            }).catch(e => {
-                console.log(e);
-            });
+            // this.getOrderList(user.id);
         }
-    }
-    retrieveProducts() {
-        ProductDataService.getProducts()
-            .then(response => {
-                this.setState({
-                    products: response.data
-                });
-                console.log(response.data);
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    }
-    refreshList() {
-        this.retrieveProducts();
-        this.setState({
-            currentProduct: null,
-            currentIndex: -1
-        });
-    }
-
-    updateProduct(p) {
-        this.props.navigate('/updateproduct/' + p);
-    }
-
-    deleteProduct(e) {
-        ProductDataService.deleteProduct(e).then(response => {
-            if (response.status === 200) {
-                this.setState({
-                    products: this.state.products.filter(product => product.id !== e)
-                });
-            }
-        }).catch(e => { console.log(e) });
     }
 
     deleteStream(e) {
@@ -112,16 +70,31 @@ class MyStore extends Component {
         this.props.navigate('/updatestream/' + e);
     }
 
+    getOrderList(e) {
+        OrderDataService.getChannelOrders(e).then(response => {
+            this.setState({
+                orders: response.data
+            });
+            console.log(response.data);
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
     render() {
 
         return (
             <div className="container-fluid">
                 <div className="text-start">
                     <h1>Welcome, {this.state.currentUser.firstName}!</h1>
+                    <Stack direction="horizontal" gap={2}>
+                        <button onClick={() => this.props.navigate('/productlist')} className="btn btn-outline-dark">Manage Products</button>
+                        <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button>
+                    </Stack>
                     <br />
                     <br />
                     <br />
-                    <h2>Scheduled streams: <button onClick={() => this.props.navigate('/newstream')} className="btn btn-success">Add Stream</button></h2>
+                    <h2>Scheduled streams: <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button></h2>
                     <div className="row">
                         {
                             this.state.streams.map(
@@ -133,11 +106,11 @@ class MyStore extends Component {
                                             <Card.Text>
                                                 {dateFormat(stream.schedule, "dd-mm-yyyy")}
                                                 <br />
-                                                {dateFormat(stream.schedule, "HH:MM")}
+                                                {dateFormat(stream.schedule, "h:MM TT")}
                                             </Card.Text>
                                             <Stack direction="horizontal" gap={2}>
-                                                <Button variant="primary" onClick={() => this.editStream(stream.id)}>Edit</Button>
-                                                <Button variant="primary" onClick={() => this.deleteStream(stream.id)}>Delete</Button>
+                                                <Button variant="dark" onClick={() => this.editStream(stream.id)}>Edit</Button>
+                                                <Button variant="dark" onClick={() => this.deleteStream(stream.id)}>Delete</Button>
                                             </Stack>
                                         </Card.Body>
                                     </Card>
@@ -148,38 +121,39 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <br />
-                    <h2>List Of Products: <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-success">Add Product</button></h2>
-                    <div className="container">
-                        <table className="table table-striped">
-                            <thead className="table-dark">
-                             <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Actions</th>
-                             </tr>
-                             </thead>
-                                <tbody>
-                                {this.state.products.map((item, i) => (
+                    <h2>Order List:</h2>
+                    <br />
+                    <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
+                        <thead className="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Products</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.orders.map((order, i) => (
                                     <tr key={i}>
-                                        <td> {item.name}</td>
-                                        <td>{item.category}</td>
-                                        <td>{item.description}</td>
-                                        <td>{item.price}</td>
-                                        <td>{item.quantity}</td>
+                                        <td className="text-truncate">{order.id}</td>
+                                        <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
+                                        <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
+                                        <td>{order.status}</td>
+                                        <td><button className="btn btn-dark" onClick={() => this.selectOrder(order.id)}>Update</button></td>
                                         <td>
-                                            <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}>Update</button>
-                                            <button className="btn btn-dark ms-2" onClick={() => this.deleteProduct(item.id)}>Remove</button>
+                                            <div style={{ whiteSpace: 'nowrap' }}>
+                                                <button className="btn btn-dark" onClick={() => this.acceptOrder(order.id)}>Update</button>
+                                                <button className="btn btn-dark ms-2" onClick={() => this.rejectOrder(order.id)}>Remove</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
-                                }
-                                 </tbody>
-                          
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );
