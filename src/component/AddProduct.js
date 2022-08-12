@@ -168,8 +168,8 @@ class AddProduct extends Component {
                         <label htmlFor="description">
                             Enter Product Description:
                         </label>
-                        <input
-                            type="text"
+                        <textarea
+                            rows="3"
                             className="form-control"
                             id="Description"
                             required
@@ -192,6 +192,9 @@ class AddProduct extends Component {
                     </div>
                     <button className="btn btn-dark" onClick={this.submit}>
                         Add It!
+                    </button>
+                    <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}>
+                        Back
                     </button>
                 </div>
             </div>

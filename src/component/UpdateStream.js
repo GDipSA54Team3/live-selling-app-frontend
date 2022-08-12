@@ -122,8 +122,11 @@ class UpdateStream extends Component {
                             name="tempSchedule"
                         />
                     </div>
-                    <button onClick={this.submit} className="btn btn-success">
+                    <button onClick={this.submit} className="btn btn-dark">
                         Edit Stream
+                    </button>
+                    <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}>
+                        Back
                     </button>
                 </div>
             </div>

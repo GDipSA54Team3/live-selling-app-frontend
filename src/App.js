@@ -11,6 +11,7 @@ import UpdateStream from "./component/UpdateStream";
 import RegisterUser from "./component/RegisterUser";
 import AddProduct from "./component/AddProduct";
 import EditProduct from "./component/EditProduct";
+import ProductList from "./component/ProductList";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
             <Route path="/register" element={<RegisterUser />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/updateproduct/:productid" element={<EditProduct />} />
+            <Route path="/productlist" element={<ProductList />} />
           </Routes>
         </div>
       </Router>

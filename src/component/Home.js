@@ -17,7 +17,7 @@ class Home extends Component {
         };
 
     }
-    
+
     componentDidMount() {
         if (sessionStorage.getItem('user') !== null) {
             this.props.navigate('/mystore');
@@ -42,12 +42,12 @@ class Home extends Component {
             password: this.state.password
         };
         LoginDataService.loginCheck(data).then(response => {
-             if (response.status === 200) {
+            if (response.status === 200) {
                 sessionStorage.setItem('user', JSON.stringify(response.data))
                 this.props.navigate('/mystore');
-             } else {
+            } else {
                 this.props.navigate('/home');
-             }
+            }
             console.log(response.data);
         }).catch(e => {
             console.log(e);
@@ -61,39 +61,42 @@ class Home extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <div className="text-start">
-                    <h1>Welcome, Customer!</h1>
+                <div className="row d-flex justify-content-center">
+                    <h1>Welcome!</h1>
                     <br />
-                    <div className="form-group my-2">
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="username"
-                            required
-                            value={this.state.username}
-                            onChange={this.onChangeUsername}
-                            name="username"
-                        />
+                    <div className="text-start" style={{ width: '300px' }}>
+                        <div className="form-group my-2">
+                            <label htmlFor="username">Username:</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="username"
+                                required
+                                value={this.state.username}
+                                onChange={this.onChangeUsername}
+                                name="username"
+                            />
+                        </div>
+                        <div className="form-group my-2">
+                            <label htmlFor="password">Password:</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                required
+                                value={this.state.password}
+                                onChange={this.onChangePassword}
+                                name="password"
+                            />
+                        </div>
+                        <button onClick={this.submit} className="btn btn-dark my-2">
+                            Sign in
+                        </button>
+                        <button onClick={this.register} className="btn btn-outline-dark ms-2">
+                            Register
+                        </button>
                     </div>
-                    <div className="form-group my-2">
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            required
-                            value={this.state.password}
-                            onChange={this.onChangePassword}
-                            name="password"
-                        />
-                    </div>
-                    <button onClick={this.submit} className="btn btn-success my-2">
-                        Sign in
-                    </button>
-                    <button onClick={this.register} className="btn btn-outline-success ms-2">
-                        Register
-                    </button>
+
                 </div>
             </div>
         )
