@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DashboardDataService from '../Services/DashboardDataService';
 import {Rating} from 'react-simple-star-rating'
 import dateFormat from 'dateformat';
+import '../Dash.css';
 
 
 class Dashboard extends Component {
@@ -113,14 +114,14 @@ class Dashboard extends Component {
 
             this.setState({
                 popsuggestion: "You haven't received any reactions yet. "+
-                "Goodluck on your next stream!"
+                "Good luck on your next stream!"
               }); 
         }
         else if (userLikes < streamerLikes && userLikes != 0) {
 
             this.setState({
                 popsuggestion: "You are getting less Hearts than other streamers. "+
-                "Try to improve. Goodluck!"
+                "Try to improve. Good luck!"
               });         
         }
         else if (userLikes == streamerLikes && userLikes != 0){
@@ -258,18 +259,22 @@ class Dashboard extends Component {
                             <p>{this.state.popsuggestion}</p>                                                                               
                             <div>{this.state.polarityChart}</div>                     
                         </div> 
-                        <div className="p-2">
+                        <div className="p-2">                            
                             <h4>Orders Pending Confirmation</h4>
-                            <p>{this.state.pendingOrderCount}</p> 
+                            <div className ={"div-contentCenter"}>
+                                <div className ={"div-Round-white"}>
+                                {this.state.pendingOrderCount}
+                                </div>
+                            </div> 
                         </div> 
                     </div> 
 
                     <div className="d-flex flex-column"> 
-                        <div>
+                        <div className = {"div-upcoming"}>
                             <h4>My Upcoming Streams</h4>
-                            <div>
+                            <div className={"div-whitebg"}>
                             <table className="table">
-                            <thead className="thead-dark">
+                            <thead className="table-striped">
                                 <tr>
                                     <th scope="col">Date</th>
                                     <th scope="col">Time</th>
@@ -291,7 +296,7 @@ class Dashboard extends Component {
                                 View All</a></p>  
                         </div>
                        
-                        <div>
+                        <div className={"div-predcition"}>
                             <h4>Number of viewers & Orders Prediction</h4>
                             <br></br>  
                             <div className="d-flex flex-row">
@@ -337,9 +342,14 @@ class Dashboard extends Component {
                                 </div>
                                     <div >
                                         <h5>Expected Orders:</h5>
-                                        <div>{this.state.predictionData[0]["order"]}</div> 
+                                        <div className ={"div-contentCenter"}>
+                                        <div className={"div-Round"}>{this.state.predictionData[0]["order"]}</div> 
+                                        </div>
+                                        <br></br>
                                         <h5>Expected Viewers:</h5>
-                                        <div>{this.state.predictionData[1]["viewer"]}</div>
+                                        <div className ={"div-contentCenter"}>
+                                        <div className={"div-Round"}>{this.state.predictionData[1]["viewer"]}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>                       
