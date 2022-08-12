@@ -4,6 +4,7 @@ import { withRouter } from "./withRouter";
 import {Card,InputGroup,FormControl, Button} from "react-bootstrap";
 import { faStepBackward, faStepForward } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import Stack from 'react-bootstrap/Stack';
       
 class ProductList extends Component {
     constructor(props) {
@@ -107,22 +108,32 @@ class ProductList extends Component {
 
         return (
             <div className="text-start">
-                <h2>List Of Products: <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-success">Add Product</button></h2>
-
-<table className="table table-striped">
-    <thead className="table-dark">
-     <tr>
-    <th scope="col">Name</th>
-    <th scope="col">Category</th>
-    <th scope="col">Description</th>
-    <th scope="col">Price</th>
-    <th scope="col">Quantity</th>
-    <th scope="col">Actions</th>
-     </tr>
-     </thead>
-        <tbody>
-            {products.length === 0 ?
-             <tr align = "center">
+                <h2>List Of Products: </h2>
+                <div className="d-flex mb-3">
+                    <div>
+                        <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
+                    </div>
+                    <div className="ms-auto">
+                        <Stack direction="horizontal" gap={2}>
+                            <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark">Add Product</button>
+                            <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
+                        </Stack>
+                    </div>
+                </div>
+                <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
+                <thead className="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                        {products.length === 0 ?
+                        <tr align = "center">
                 <td colSpan="6">No Products Available</td>
              </tr>:
                 currentProducts.map((item, i) => (
@@ -139,37 +150,34 @@ class ProductList extends Component {
             </tr>
         ))
         }
-         </tbody>
-  
-</table>
+            </tbody>
+            </table>
 
-    {products.length > 0? (
-    <Card.Footer>
-    <div style={{"float": "left"}}>
-        Showing Page {currentPage} of {totalPages}
-    </div>
-    <div style={{ float: "right" }}>
-     <InputGroup size="sm">
-            <Button type ="button" variant="outline-dark" disabled={currentPage === 1? true: false}
-                onClick={this.prevPage}>
-                <FontAwesomeIcon icon ={faStepBackward} /> Prev
-            </Button>
-        <FormControl style={pageNumCss} name="currentPage" value={currentPage}
-            onChange={this.changePage}/>
-            <Button type ="button" variant="outline-dark" disabled={currentPage === totalPages? true: false}
-             onClick={this.nextPage}>
-             <FontAwesomeIcon icon ={faStepForward} /> Next
-            </Button>
-       </InputGroup>
-     </div>
-</Card.Footer>) : null}          
-       
+              {products.length > 0? (
+                    <Card.Footer>
+                    <div style={{"float": "left"}}>
+                        Showing Page {currentPage} of {totalPages}
+                    </div>
+                    <div style={{ float: "right" }}>
+                    <InputGroup size="sm">
+                            <Button type ="button" variant="outline-dark" disabled={currentPage === 1? true: false}
+                                onClick={this.prevPage}>
+                                <FontAwesomeIcon icon ={faStepBackward} /> Prev
+                            </Button>
+                        <FormControl style={pageNumCss} name="currentPage" value={currentPage}
+                            onChange={this.changePage}/>
+                            <Button type ="button" variant="outline-dark" disabled={currentPage === totalPages? true: false}
+                            onClick={this.nextPage}>
+                            <FontAwesomeIcon icon ={faStepForward} /> Next
+                            </Button>
+                    </InputGroup>
+                    </div>
+                </Card.Footer>) : null}          
+             </div>
 
-</div>
-
-);
+            );
+         }
     }
-}
-export default withRouter(ProductList);
+        export default withRouter(ProductList);
 
 
