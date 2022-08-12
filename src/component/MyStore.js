@@ -13,9 +13,7 @@ class MyStore extends Component {
         this.deleteStream = this.deleteStream.bind(this);
         this.editStream = this.editStream.bind(this);
         this.getOrderList = this.getOrderList.bind(this);
-        // this.selectOrder = this.selectOrder.bind(this);
-        // this.acceptOrder = this.acceptOrder.bind(this);
-        // this.rejectOrder = this.rejectOrder.bind(this);
+        this.updateOrderStatus = this.updateOrderStatus.bind(this);
 
         this.state = {
             currentUser: {
@@ -52,7 +50,7 @@ class MyStore extends Component {
             }).catch(e => {
                 console.log(e);
             });
-            // this.getOrderList(user.id);
+            this.getOrderList(user.id);
         }
     }
 
@@ -71,7 +69,7 @@ class MyStore extends Component {
     }
 
     getOrderList(e) {
-        OrderDataService.getChannelOrders(e).then(response => {
+        OrderDataService.getChannelOrdersByUserId(e).then(response => {
             this.setState({
                 orders: response.data
             });
@@ -79,6 +77,16 @@ class MyStore extends Component {
         }).catch(e => {
             console.log(e);
         });
+    }
+
+    updateOrderStatus(e1, e2) {
+        OrderDataService.updateOrderStatus(e1, e2).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    orders: this.state.orders.filter(order => order.id !== e1)
+                });
+            }
+        }).catch(e => { console.log(e) });
     }
 
     render() {
@@ -95,6 +103,7 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <h2>Scheduled streams: <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button></h2>
+                    <br />
                     <div className="row">
                         {
                             this.state.streams.map(
@@ -121,16 +130,21 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <br />
-                    <h2>Order List:</h2>
+
+                    <Stack direction="horizontal" gap={2}>
+                        <h2>Order List:</h2>
+                        <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
+                        <button onClick={null} className="btn btn-outline-dark">Order History</button>
+                    </Stack>
                     <br />
-                    <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
+                    <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
                         <thead className="table-dark">
                             <tr>
                                 <th>ID</th>
                                 <th>Customer</th>
                                 <th>Date</th>
                                 <th>Status</th>
-                                <th>Products</th>
+                                <th>Product</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -142,11 +156,11 @@ class MyStore extends Component {
                                         <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
                                         <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
                                         <td>{order.status}</td>
-                                        <td><button className="btn btn-dark" onClick={() => this.selectOrder(order.id)}>Update</button></td>
+                                        <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}>View</button></td>
                                         <td>
                                             <div style={{ whiteSpace: 'nowrap' }}>
-                                                <button className="btn btn-dark" onClick={() => this.acceptOrder(order.id)}>Update</button>
-                                                <button className="btn btn-dark ms-2" onClick={() => this.rejectOrder(order.id)}>Remove</button>
+                                                <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>
+                                                <button className="btn btn-dark ms-2" onClick={null}>Reject</button>
                                             </div>
                                         </td>
                                     </tr>
