@@ -106,7 +106,7 @@ class RegisterUser extends Component {
         this.state.newUser.address !== "" && this.state.newUser.username !== "" &&
         this.state.newUser.password !== "" && this.state.channelName !== "" &&
         this.state.newUser.passwordVeri === this.state.newUser.password) {
-            UserDataService.addNewUser(this.state.channelName, this.state.newUser).then(response => {
+            UserDataService.addNewUser(this.state.channelName, this.state.newUser.username, this.state.newUser.password, this.state.newUser.address, this.state.newUser).then(response => {
                 if (response.status === 201) {
                     this.props.navigate('/home');
                 }

@@ -4,8 +4,12 @@ const ORDER_API_BASE_URL = "http://localhost:8080/api/orders";
 
 class OrderDataService {
 
-    getChannelOrdersByUserId(id) {
-        return axios.get(ORDER_API_BASE_URL + "/channelordersuser/" + id);
+    getChannelOrdersPendingByUserId(id) {
+        return axios.get(ORDER_API_BASE_URL + "/channelordersuserpending/" + id);
+    }
+
+    getChannelOrdersConfirmedByUserId(id) {
+        return axios.get(ORDER_API_BASE_URL + "/channelordersuserconfirmed/" + id);
     }
 
     getProductsInOrder(id) {

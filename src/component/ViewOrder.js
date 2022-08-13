@@ -7,6 +7,7 @@ class ViewOrder extends Component {
     constructor(props) {
         super(props);
         this.retrieveOrderProducts = this.retrieveOrderProducts.bind(this);
+        this.updateOrderStatus = this.updateOrderStatus.bind(this);
 
         this.state = {
             currentUser: {
@@ -17,7 +18,8 @@ class ViewOrder extends Component {
             orderProducts: [],
             currentOrder: {
                 id: "",
-                customerName: ""
+                customerName: "",
+                status: "",
             }
         }
     }
@@ -45,7 +47,8 @@ class ViewOrder extends Component {
                         currentOrder: {
                             ...prevState.currentOrder,
                             id: response.data.id,
-                            customerName: response.data.user.firstName + " " + response.data.user.lastName
+                            customerName: response.data.user.firstName + " " + response.data.user.lastName,
+                            status: response.data.status
                         }
                     }
                 });
@@ -70,6 +73,14 @@ class ViewOrder extends Component {
             });
     }
 
+    updateOrderStatus(e1, e2) {
+        OrderDataService.updateOrderStatus(e1, e2).then(response => {
+            if (response.status === 200) {
+                this.props.navigate('/mystore');
+            }
+        }).catch(e => { console.log(e) });
+    }
+
     render() {
         return (
             <div className="text-start">
@@ -82,10 +93,13 @@ class ViewOrder extends Component {
                         <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
                     </div>
                     <div className="ms-auto">
-                        <Stack direction="horizontal" gap={2}>
-                            <button onClick={null} className="btn btn-outline-dark">Accept</button>
-                            <button onClick={null} className="btn btn-outline-dark">Reject</button>
-                        </Stack>
+                        {
+                            (this.state.currentOrder.status === "CONFIRMED") ? null :
+                                <Stack direction="horizontal" gap={2}>
+                                    <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "CONFIRMED")} className="btn btn-outline-dark">Accept</button>
+                                    <button onClick={null} className="btn btn-outline-dark">Reject</button>
+                                </Stack>
+                        }
                     </div>
                 </div>
 
@@ -101,7 +115,10 @@ class ViewOrder extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {
+                        {(this.state.orderProducts.length === 0) ?
+                            <tr align="center">
+                                <td colSpan="5">No Products Available</td>
+                            </tr> :
                             this.state.orderProducts.map((item, i) => (
                                 <tr key={i}>
                                     <td className="text-truncate">{item.product.name}</td>

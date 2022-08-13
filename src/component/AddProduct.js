@@ -102,7 +102,7 @@ class AddProduct extends Component {
         this.state.currentProduct.price !== 0) {
             ProductDataService.addToStore(this.state.currentUser.id, this.state.currentProduct).then(response => {
                 if (response.status === 201) {
-                    this.props.navigate('/mystore');
+                    this.props.navigate('/productlist');
                 }
             }).catch(e => {
                 console.log(e);

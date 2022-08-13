@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import ProductDataService from "../Services/ProductDataService"
 import { withRouter } from "./withRouter";
-import {Card,InputGroup,FormControl, Button} from "react-bootstrap";
-import { faStepBackward, faStepForward } from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faSort } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Stack from 'react-bootstrap/Stack';
-      
+
 class ProductList extends Component {
     constructor(props) {
         super(props);
         this.retrieveProducts = this.retrieveProducts.bind(this);
         this.updateProduct = this.updateProduct.bind(this);
         this.deleteProduct = this.deleteProduct.bind(this);
+        this.sortByProductName = this.sortByProductName.bind(this);
+        this.sortByProductCat = this.sortByProductCat.bind(this);
+        this.sortByProductPrice = this.sortByProductPrice.bind(this);
+        this.sortByProductQty = this.sortByProductQty.bind(this);
 
         this.state = {
             currentUser: {
@@ -20,6 +24,7 @@ class ProductList extends Component {
                 lastName: ""
             },
             products: [],
+            sorted: "ascending",
             currentPage: 1,
             productsPerPage: 5
         }
@@ -71,38 +76,104 @@ class ProductList extends Component {
         }).catch(e => { console.log(e) });
     }
 
-    changePage = event =>{
-        this.setState({
-            [event.target.name] : parseInt(event.target.value),
+    sortByProductName() {
+        ProductDataService.getProductsByUserIdSorted(this.state.currentUser.id, this.state.sorted).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    products: response.data,
+                    sorted: this.state.sorted === "descending" ? "ascending" : "descending"
+                });
+                console.log(response.data);
+            }
+        }).catch(e => {
+            console.log(e);
         });
-    };
+    }
+
+    sortByProductCat() {
+        ProductDataService.getProductsByUserIdCatSorted(this.state.currentUser.id, this.state.sorted).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    products: response.data,
+                    sorted: this.state.sorted === "descending" ? "ascending" : "descending"
+                });
+                console.log(response.data);
+            }
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+    sortByProductPrice() {
+        ProductDataService.getProductsByUserIdPriceSorted(this.state.currentUser.id, this.state.sorted).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    products: response.data,
+                    sorted: this.state.sorted === "descending" ? "ascending" : "descending"
+                });
+                console.log(response.data);
+            }
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+    sortByProductQty() {
+        ProductDataService.getProductsByUserIdQtySorted(this.state.currentUser.id, this.state.sorted).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    products: response.data,
+                    sorted: this.state.sorted === "descending" ? "ascending" : "descending"
+                });
+                console.log(response.data);
+            }
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+    changePage = event => {
+        this.setState({
+            [event.target.name]: parseInt(event.target.value),
+        });
+    }
+
+    toFirstPage = () => {
+        this.setState({
+            currentPage: 1,
+        });
+    }
+
+    toLastPage = () => {
+        const totalPages = Math.ceil(this.state.products.length / this.state.productsPerPage);
+        this.setState({
+            currentPage: totalPages,
+        });
+    }
 
     prevPage = () => {
-        if (this.state.currentPage > 1){
-            this.setState({
-                currentPage: this.state.currentPage -1,
-            });
-        }
-    };
+        this.setState({
+            currentPage: this.state.currentPage - 1,
+        });
+    }
+
     nextPage = () => {
-        if (this.state.currentPage < 10){
-            this.setState({
-                currentPage: this.state.currentPage + 1,
-            })
-        }
-    };
+        this.setState({
+            currentPage: this.state.currentPage + 1,
+        })
+    }
 
     render() {
-        const {products, currentPage, productsPerPage} = this.state;
+        const { products, currentPage, productsPerPage } = this.state;
         const lastIndex = currentPage * productsPerPage;
-        const firstIndex = lastIndex - productsPerPage; 
+        const firstIndex = lastIndex - productsPerPage;
         const currentProducts = products.slice(firstIndex, lastIndex);
         const totalPages = Math.ceil(products.length / productsPerPage);
         const pageNumCss = {
-            width:"45px",
-            border:"1px solid black",
-            color:"black",
-            textAlign:"center",
+            width: "45px",
+            border: "1px solid black",
+            color: "black",
+            textAlign: "center",
             fontWeight: "bold"
         };
 
@@ -121,63 +192,72 @@ class ProductList extends Component {
                     </div>
                 </div>
                 <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
-                <thead className="table-dark">
+                    <thead className="table-dark">
                         <tr>
-                            <th>Name</th>
-                            <th>Category</th>
+                            <th onClick={this.sortByProductName}>Name <FontAwesomeIcon icon={faSort} /></th>
+                            <th onClick={this.sortByProductCat}>Category <FontAwesomeIcon icon={faSort} /></th>
                             <th>Description</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
+                            <th onClick={this.sortByProductPrice}>Price <FontAwesomeIcon icon={faSort} /></th>
+                            <th onClick={this.sortByProductQty}>Quantity <FontAwesomeIcon icon={faSort} /></th>
                             <th>Actions</th>
                         </tr>
-                        </thead>
+                    </thead>
                     <tbody>
-                        {products.length === 0 ?
-                        <tr align = "center">
-                <td colSpan="6">No Products Available</td>
-             </tr>:
-                currentProducts.map((item, i) => (
-                <tr key={i}>
-                <td> {item.name}</td>
-                <td>{item.category}</td>
-                <td>{item.description}</td>
-                <td>{item.price}</td>
-                <td>{item.quantity}</td>
-                <td>
-                    <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}>Update</button>
-                    <button className="btn btn-dark ms-2" onClick={() => this.deleteProduct(item.id)}>Remove</button>
-                </td>
-            </tr>
-        ))
-        }
-            </tbody>
-            </table>
+                        {
+                            products.length === 0 ?
+                                <tr align="center">
+                                    <td colSpan="6">No Products Available</td>
+                                </tr> :
+                                currentProducts.map((item, i) => (
+                                    <tr key={i}>
+                                        <td>{item.name}</td>
+                                        <td>{item.category}</td>
+                                        <td>{item.description}</td>
+                                        <td>S${item.price.toFixed(2)}</td>
+                                        <td>{item.quantity}</td>
+                                        <td>
+                                            <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}>Update</button>
+                                            <button className="btn btn-dark ms-2" onClick={() => this.deleteProduct(item.id)}>Remove</button>
+                                        </td>
+                                    </tr>
+                                ))
+                        }
+                    </tbody>
+                </table>
 
-              {products.length > 0? (
+                {products.length > 0 ? (
                     <Card.Footer>
-                    <div style={{"float": "left"}}>
-                        Showing Page {currentPage} of {totalPages}
-                    </div>
-                    <div style={{ float: "right" }}>
-                    <InputGroup size="sm">
-                            <Button type ="button" variant="outline-dark" disabled={currentPage === 1? true: false}
-                                onClick={this.prevPage}>
-                                <FontAwesomeIcon icon ={faStepBackward} /> Prev
-                            </Button>
-                        <FormControl style={pageNumCss} name="currentPage" value={currentPage}
-                            onChange={this.changePage}/>
-                            <Button type ="button" variant="outline-dark" disabled={currentPage === totalPages? true: false}
-                            onClick={this.nextPage}>
-                            <FontAwesomeIcon icon ={faStepForward} /> Next
-                            </Button>
-                    </InputGroup>
-                    </div>
-                </Card.Footer>) : null}          
-             </div>
+                        <div style={{ "float": "left" }}>
+                            Showing Page {currentPage} of {totalPages}
+                        </div>
+                        <div style={{ float: "right" }}>
+                            <InputGroup size="sm">
+                                <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                    onClick={this.toFirstPage}>
+                                    <FontAwesomeIcon icon={faBackwardFast} />
+                                </Button>
+                                <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                    onClick={this.prevPage}>
+                                    <FontAwesomeIcon icon={faStepBackward} />
+                                </Button>
+                                <FormControl style={pageNumCss} name="currentPage" value={currentPage}
+                                    onChange={this.changePage} />
+                                <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                    onClick={this.nextPage}>
+                                    <FontAwesomeIcon icon={faStepForward} />
+                                </Button>
+                                <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                    onClick={this.toLastPage}>
+                                    <FontAwesomeIcon icon={faForwardFast} />
+                                </Button>
+                            </InputGroup>
+                        </div>
+                    </Card.Footer>) : null}
+            </div>
 
-            );
-         }
+        );
     }
-        export default withRouter(ProductList);
+}
+export default withRouter(ProductList);
 
 

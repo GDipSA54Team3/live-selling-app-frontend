@@ -1,11 +1,12 @@
 import dateFormat from 'dateformat';
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import OrderDataService from '../Services/OrderDataService';
 import UserDataService from '../Services/UserDataService';
 import { withRouter } from './withRouter';
+import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class MyStore extends Component {
     constructor(props) {
@@ -23,6 +24,8 @@ class MyStore extends Component {
             },
             streams: [],
             orders: [],
+            currentPage: 1,
+            itemsPerPage: 5
         }
 
     }
@@ -69,7 +72,7 @@ class MyStore extends Component {
     }
 
     getOrderList(e) {
-        OrderDataService.getChannelOrdersByUserId(e).then(response => {
+        OrderDataService.getChannelOrdersPendingByUserId(e).then(response => {
             this.setState({
                 orders: response.data
             });
@@ -89,15 +92,58 @@ class MyStore extends Component {
         }).catch(e => { console.log(e) });
     }
 
+    changePage = event => {
+        this.setState({
+            [event.target.name]: parseInt(event.target.value),
+        });
+    };
+
+    toFirstPage = () => {
+        this.setState({
+            currentPage: 1,
+        });
+    }
+
+    toLastPage = () => {
+        const totalPages = Math.ceil(this.state.orders.length / this.state.itemsPerPage);
+        this.setState({
+            currentPage: totalPages,
+        });
+    }
+
+    prevPage = () => {
+        this.setState({
+            currentPage: this.state.currentPage - 1,
+        });
+    };
+
+    nextPage = () => {
+        this.setState({
+            currentPage: this.state.currentPage + 1,
+        })
+    };
+
     render() {
+        const { orders, currentPage, itemsPerPage } = this.state;
+        const lastIndex = currentPage * itemsPerPage;
+        const firstIndex = lastIndex - itemsPerPage;
+        const currentOrderPage = orders.slice(firstIndex, lastIndex);
+        const totalPages = Math.ceil(orders.length / itemsPerPage);
+        const pageNumCss = {
+            width: "45px",
+            border: "1px solid black",
+            color: "black",
+            textAlign: "center",
+            fontWeight: "bold"
+        };
 
         return (
             <div className="container-fluid">
                 <div className="text-start">
                     <h1>Welcome, {this.state.currentUser.firstName}!</h1>
                     <Stack direction="horizontal" gap={2}>
-                        <button onClick={() => this.props.navigate('/productlist')} className="btn btn-outline-dark">Manage Products</button>
-                        <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button>
+                        <button onClick={() => this.props.navigate('/productlist')} className="btn btn-dark">Manage Products</button>
+                        <button onClick={() => this.props.navigate('/newstream')} className="btn btn-dark">Add Stream</button>
                     </Stack>
                     <br />
                     <br />
@@ -106,25 +152,27 @@ class MyStore extends Component {
                     <br />
                     <div className="row">
                         {
-                            this.state.streams.map(
-                                (stream, index) => (
-                                    <Card className="mx-3" style={{ width: '18rem' }} key={index}>
-                                        <Card.Img variant="top" src="" />
-                                        <Card.Body>
-                                            <Card.Title>{stream.title}</Card.Title>
-                                            <Card.Text>
-                                                {dateFormat(stream.schedule, "dd-mm-yyyy")}
-                                                <br />
-                                                {dateFormat(stream.schedule, "h:MM TT")}
-                                            </Card.Text>
-                                            <Stack direction="horizontal" gap={2}>
-                                                <Button variant="dark" onClick={() => this.editStream(stream.id)}>Edit</Button>
-                                                <Button variant="dark" onClick={() => this.deleteStream(stream.id)}>Delete</Button>
-                                            </Stack>
-                                        </Card.Body>
-                                    </Card>
+                            (this.state.streams.length === 0) ?
+                                <p align="center">No Streams Scheduled</p> :
+                                this.state.streams.map(
+                                    (stream, index) => (
+                                        <Card className="mx-3" style={{ width: '18rem' }} key={index}>
+                                            <Card.Img variant="top" src="" />
+                                            <Card.Body>
+                                                <Card.Title>{stream.title}</Card.Title>
+                                                <Card.Text>
+                                                    {dateFormat(stream.schedule, "dd-mm-yyyy")}
+                                                    <br />
+                                                    {dateFormat(stream.schedule, "h:MM TT")}
+                                                </Card.Text>
+                                                <Stack direction="horizontal" gap={2}>
+                                                    <Button variant="dark" onClick={() => this.editStream(stream.id)}>Edit</Button>
+                                                    <Button variant="dark" onClick={() => this.deleteStream(stream.id)}>Delete</Button>
+                                                </Stack>
+                                            </Card.Body>
+                                        </Card>
+                                    )
                                 )
-                            )
                         }
                     </div>
                     <br />
@@ -132,9 +180,9 @@ class MyStore extends Component {
                     <br />
 
                     <Stack direction="horizontal" gap={2}>
-                        <h2>Order List:</h2>
+                        <h2>Outstanding Order List:</h2>
                         <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
-                        <button onClick={null} className="btn btn-outline-dark">Order History</button>
+                        <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark">Order History</button>
                     </Stack>
                     <br />
                     <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
@@ -150,24 +198,60 @@ class MyStore extends Component {
                         </thead>
                         <tbody>
                             {
-                                this.state.orders.map((order, i) => (
-                                    <tr key={i}>
-                                        <td className="text-truncate">{order.id}</td>
-                                        <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
-                                        <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
-                                        <td>{order.status}</td>
-                                        <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}>View</button></td>
-                                        <td>
-                                            <div style={{ whiteSpace: 'nowrap' }}>
-                                                <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>
-                                                <button className="btn btn-dark ms-2" onClick={null}>Reject</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
+                                (this.state.orders.length === 0) ?
+                                    <tr align="center">
+                                        <td colSpan="6">No Orders Available</td>
+                                    </tr> :
+                                    currentOrderPage.map((order, i) => (
+                                        <tr key={i}>
+                                            <td className="text-truncate">{order.id}</td>
+                                            <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
+                                            <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
+                                            <td>{order.status}</td>
+                                            <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}>View</button></td>
+                                            <td>
+                                                <div style={{ whiteSpace: 'nowrap' }}>
+                                                    <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>
+                                                    <button className="btn btn-dark ms-2" onClick={null}>Reject</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
                             }
                         </tbody>
                     </table>
+
+                    {
+                        orders.length > 0 ? (
+                            <Card.Footer>
+                                <div style={{ "float": "left" }}>
+                                    Showing Page {currentPage} of {totalPages}
+                                </div>
+                                <div style={{ float: "right" }}>
+                                    <InputGroup size="sm">
+                                        <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                            onClick={this.toFirstPage}>
+                                            <FontAwesomeIcon icon={faBackwardFast} />
+                                        </Button>
+                                        <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                            onClick={this.prevPage}>
+                                            <FontAwesomeIcon icon={faStepBackward} />
+                                        </Button>
+                                        <FormControl style={pageNumCss} name="currentPage" value={currentPage}
+                                            onChange={this.changePage} />
+                                        <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                            onClick={this.nextPage}>
+                                            <FontAwesomeIcon icon={faStepForward} />
+                                        </Button>
+                                        <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                            onClick={this.toLastPage}>
+                                            <FontAwesomeIcon icon={faForwardFast} />
+                                        </Button>
+                                    </InputGroup>
+                                </div>
+                            </Card.Footer>) : null
+                    }
+
                 </div>
             </div>
         );
