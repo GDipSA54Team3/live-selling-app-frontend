@@ -27,6 +27,22 @@ class ProductService {
     deleteProduct(id) {
         return axios.delete(PRODUCT_API_BASE_URL + "/products/" + id);
     }
+
+    getProductsByUserIdSorted(id, order) {
+        return axios.get(PRODUCT_API_BASE_URL + "/channelproductssortbyname/" + id + "/" + order);
+    }
+
+    getProductsByUserIdCatSorted(id, order) {
+        return axios.get(PRODUCT_API_BASE_URL + "/channelproductssortbycat/" + id + "/" + order);
+    }
+
+    getProductsByUserIdPriceSorted(id, order) {
+        return axios.get(PRODUCT_API_BASE_URL + "/channelproductssortbyprice/" + id + "/" + order);
+    }
+
+    getProductsByUserIdQtySorted(id, order) {
+        return axios.get(PRODUCT_API_BASE_URL + "/channelproductssortbyqty/" + id + "/" + order);
+    }
 }
 
 export default new ProductService();

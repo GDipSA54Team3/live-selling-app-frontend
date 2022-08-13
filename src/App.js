@@ -13,6 +13,7 @@ import AddProduct from "./component/AddProduct";
 import EditProduct from "./component/EditProduct";
 import ProductList from "./component/ProductList";
 import ViewOrder from "./component/ViewOrder"
+import ViewOrdersHistory from "./component/ViewOrdersHistory";
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
             <Route path="/updateproduct/:productid" element={<EditProduct />} />
             <Route path="/productlist" element={<ProductList />} />
             <Route path="/vieworder/:orderid" element={<ViewOrder />} />
+            <Route path="/vieworderhistory" element={<ViewOrdersHistory />} />
           </Routes>
         </div>
       </Router>
