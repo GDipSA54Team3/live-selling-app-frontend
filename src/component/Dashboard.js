@@ -3,6 +3,7 @@ import DashboardDataService from '../Services/DashboardDataService';
 import {Rating} from 'react-simple-star-rating'
 import dateFormat from 'dateformat';
 import '../Dash.css';
+import { withRouter } from './withRouter';
 
 
 class Dashboard extends Component {
@@ -17,9 +18,10 @@ class Dashboard extends Component {
         this.setSuggestion = this.setSuggestion.bind(this);
         this.getPendingOrderCount =  this.getPendingOrderCount.bind(this);        
         this.predict =  this.predict.bind(this);
+        
         this.state = {
           currentUser: {
-              id: "",
+              id: "",              
               firstName: "",
               lastName: ""
           },
@@ -44,11 +46,14 @@ class Dashboard extends Component {
       }              
     }
     componentDidMount() {      
-        if (sessionStorage.getItem('user') === null) {
+        
+        const user = JSON.parse(sessionStorage.getItem('user'));     
+        if ((user === null)
+         || (user.isVerified === false)) {
             this.props.navigate('/home');
-        } 
-        else {
-            const user = JSON.parse(sessionStorage.getItem('user'));                       
+        }
+        
+        else {                           
             this.setState({
                 productCategory: "Clothing",
                 day: "SUN",
@@ -88,7 +93,7 @@ class Dashboard extends Component {
 
     }
     getUpcomingStreams(){
-        DashboardDataService.getAllUserStreamsPending(this.state.currentUser.id).then(response => {
+        DashboardDataService.getThreeUserStreamsPending(this.state.currentUser.id).then(response => {
             this.setState({
                 streams: response.data                
             });
@@ -110,21 +115,21 @@ class Dashboard extends Component {
         let streamerLikes = parseInt(this.state.avgStreamerLikes)  
         console.log(userLikes)
         console.log(streamerLikes)
-        if (userLikes == 0 ) {
+        if (userLikes === 0 ) {
 
             this.setState({
                 popsuggestion: "You haven't received any reactions yet. "+
                 "Good luck on your next stream!"
               }); 
         }
-        else if (userLikes < streamerLikes && userLikes != 0) {
+        else if (userLikes < streamerLikes && userLikes !== 0) {
 
             this.setState({
                 popsuggestion: "You are getting less Hearts than other streamers. "+
                 "Try to improve. Good luck!"
               });         
         }
-        else if (userLikes == streamerLikes && userLikes != 0){
+        else if (userLikes === streamerLikes && userLikes !== 0){
             this.setState({
                 popsuggestion: "You are getting same number of Hearts as other streamers. "+ 
                 "Good job!. Check if you can improve further"
@@ -283,10 +288,12 @@ class Dashboard extends Component {
                             </thead>
                             <tbody>
                                 {this.state.streams.map((item, i) => (
-                                    <tr key={i}>                                        
+                                    <tr key={i} className={"limited_tbl_row"}>                                        
                                         <td> {dateFormat(item.schedule, "dd-mm-yyyy")}</td>
                                         <td>{dateFormat(item.schedule, "HH:MM")}</td>
-                                        <td>{item.title}</td>				
+                                        <td className={"limited_tbl_row"}>
+                                            {item.title.length<20 ?item.title:item.title.substring(0,20)+"..."}                                     
+                                        </td>				
                                     </tr>
                             ))}
                             </tbody>
@@ -297,7 +304,7 @@ class Dashboard extends Component {
                         </div>
                        
                         <div className={"div-predcition"}>
-                            <h4>Number of viewers & Orders Prediction</h4>
+                            <h4>Viewers and Orders Prediction</h4>
                             <br></br>  
                             <div className="d-flex flex-row">
                                 <div className="p-2">
@@ -369,4 +376,4 @@ class Dashboard extends Component {
         );  
     } 
 }
-export default Dashboard
+export default withRouter(Dashboard)
