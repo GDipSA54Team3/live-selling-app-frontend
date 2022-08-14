@@ -55,7 +55,7 @@ class DashboardDataService {
 
         return bytime 
     }
-    getAllUserStreamsPending(userId) {
+    getThreeUserStreamsPending(userId) {
         return axios.get(STREAM_API_BASE_URL + "upcomingstreams/" + userId)
     }
     getAllPendingStreamCount(userId){
