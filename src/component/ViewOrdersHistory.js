@@ -125,7 +125,7 @@ class ViewOrdersHistory extends Component {
                         {
                             (this.state.orders.length === 0) ?
                                 <tr align="center">
-                                    <td colSpan="6">No Orders Available</td>
+                                    <td colSpan="5">No Orders Available</td>
                                 </tr> :
                                 currentOrderPage.map((order, i) => (
                                     <tr key={i}>

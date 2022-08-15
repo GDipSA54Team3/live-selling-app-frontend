@@ -25,6 +25,7 @@ class AddProduct extends Component {
                 firstName: "",
                 lastName: ""
             },
+            errorMsg: ""
         }
     }
 
@@ -107,6 +108,10 @@ class AddProduct extends Component {
             }).catch(e => {
                 console.log(e);
             });
+        } else {
+            this.setState({
+                errorMsg: "*Product name & description cannot be empty \n*Product price cannot be S$0"
+            });
         }
     }
 
@@ -115,7 +120,7 @@ class AddProduct extends Component {
             <div className="container-fluid">
                 <div className="text-start">
                     <h2>What do you want to add?</h2>
-                    <br/>
+                    {this.state.errorMsg === null ? <br/> : <p style={{ color: "#ff0000", whiteSpace: "pre-line" }}>{this.state.errorMsg}</p>}
                     <div className="form-group mb-3" >
                         <label htmlFor="name">
                             Enter Name:
