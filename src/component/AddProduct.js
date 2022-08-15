@@ -15,7 +15,7 @@ class AddProduct extends Component {
         this.state = {
             currentProduct: {
                 name: "",
-                cat: "CLOTHING",
+                category: "CLOTHING",
                 description: "",
                 price: 0,
                 quantity: 0
@@ -59,7 +59,7 @@ class AddProduct extends Component {
             return {
                 currentProduct: {
                     ...prevState.currentProduct,
-                    cat: p.target.value
+                    category: p.target.value
                 }
             }
         });
@@ -139,7 +139,7 @@ class AddProduct extends Component {
                             Enter Category:
                         </label>
                         <select className="form-select" aria-label="Default select example" name="product_category"
-                            value={this.state.currentProduct.cat} onChange={this.onChangeCategory} >
+                            value={this.state.currentProduct.category} onChange={this.onChangeCategory} >
                             <option value="CLOTHING">Clothing</option>
                             <option value="FOOD">Food</option>
                             <option value="APPLIANCES">Home Appliances</option>

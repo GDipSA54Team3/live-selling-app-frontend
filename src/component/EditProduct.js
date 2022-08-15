@@ -16,7 +16,7 @@ class EditProduct extends Component {
             currentProduct: {
                 id: "",
                 name: "",
-                cat: "",
+                category: "",
                 description: "",
                 price: 0.0,
                 quantity: 0
@@ -49,7 +49,7 @@ class EditProduct extends Component {
                             ...prevState.currentProduct,
                             id: response.data.id,
                             name: response.data.name,
-                            cat: response.data.category,
+                            category: response.data.category,
                             description: response.data.description,
                             price: response.data.price,
                             quantity: response.data.quantity
@@ -79,7 +79,7 @@ class EditProduct extends Component {
             return {
                 currentProduct: {
                     ...prevState.currentProduct,
-                    cat: p.target.value
+                    category: p.target.value
                 }
             }
         });
@@ -155,7 +155,7 @@ class EditProduct extends Component {
                             Enter Category:
                         </label>
                         <select className="form-select" aria-label="Default select example" name="product_category"
-                            value={this.state.currentProduct.cat} onChange={this.onChangeCategory} >
+                            value={this.state.currentProduct.category} onChange={this.onChangeCategory} >
                             <option value="CLOTHING" >Clothing</option>
                             <option value="FOOD">Food</option>
                             <option value="APPLIANCES">Home Appliances</option>
