@@ -8,6 +8,7 @@ import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
 import { faStepBackward, faStepForward, faBackwardFast, faForwardFast } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+
 class MyStore extends Component {
     constructor(props) {
         super(props);
@@ -148,7 +149,7 @@ class MyStore extends Component {
                     <br />
                     <br />
                     <br />
-                    <h2>Scheduled streams: <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button></h2>
+                    <h2 id="scheduled_streams">Scheduled streams: <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button></h2>
                     <br />
                     <div className="row">
                         {
@@ -180,7 +181,7 @@ class MyStore extends Component {
                     <br />
 
                     <Stack direction="horizontal" gap={2}>
-                        <h2>Outstanding Order List:</h2>
+                        <h2 id="outstanding_orders">Outstanding Order List:</h2>
                         <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
                         <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark">Order History</button>
                     </Stack>

@@ -1,7 +1,9 @@
+
 .div-predcition {
   background-color: #fae3f1;
-  border-radius: 25px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 5px;
 }
 .div-Round {
   height: 75px;
@@ -15,10 +17,10 @@
   font-weight: bold;
   color: brown;
 }
-.div-Round-white {
+.div-Round-pending {
   height: 50px;
   width: 50px;
-  background-color: #ffffff;
+  background-color: #fae3f1;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -27,18 +29,14 @@
   font-weight: bold;
   color: brown;
 }
-
-
-.div-upcoming {
-  background-color: #d7ded7;
-  border-radius: 25px;
-  padding: 10px;
-  margin: 5px;
+.div-brown-font {
+    color: brown;
 }
+
 .div-whitebg {
   background-color: #ffffff;
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 2px;
+  padding: 5px;
   margin: 5px;
 }
 .div-contentCenter
@@ -48,12 +46,42 @@
     justify-content: center;
 
   } 
+  .div-lightBoarder{
+  border-width:2px;
+  border-style:solid;
+  border-radius: 10px;
+  border-color:rgb(202, 199, 199);
+  padding: 5px;
+  margin: 5px;
+  }
+  .div-grayfill{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    background-color: rgb(202, 199, 199);
+    
+    }
+  .div-graygapfill{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    background-color: rgb(202, 199, 199);
+  }  
+  .div-background{
+    position:absolute;
+    left:0;
+    right:0; 
+    zoom: .9;
+  }  
 
 h3 {
-  color: #076ef5;
+  color: #000000;
  }
  h4 {
-  color: #138deb;
+  color: #000000;
+ }
+ body{
+margin: 0;
  }
 
 
