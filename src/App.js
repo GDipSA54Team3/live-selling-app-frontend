@@ -14,6 +14,7 @@ import EditProduct from "./component/EditProduct";
 import ProductList from "./component/ProductList";
 import ViewOrder from "./component/ViewOrder"
 import ViewOrdersHistory from "./component/ViewOrdersHistory";
+import RegistrationSuccess from "./component/RegistrationSuccess";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
             <Route path="/productlist" element={<ProductList />} />
             <Route path="/vieworder/:orderid" element={<ViewOrder />} />
             <Route path="/vieworderhistory" element={<ViewOrdersHistory />} />
+            <Route path="/registersuccess" element={<RegistrationSuccess />} />
           </Routes>
         </div>
       </Router>

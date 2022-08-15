@@ -13,7 +13,8 @@ class Home extends Component {
 
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            errorMsg: ""
         };
 
     }
@@ -45,12 +46,15 @@ class Home extends Component {
             if (response.status === 200) {
                 sessionStorage.setItem('user', JSON.stringify(response.data))
                 this.props.navigate('/mystore');
-            } else {
-                this.props.navigate('/home');
             }
             console.log(response.data);
         }).catch(e => {
             console.log(e);
+            if (e.response.status === 404) {
+                this.setState({
+                    errorMsg: "*Username/Password incorrect"
+                });
+            }
         });
     }
 
@@ -61,7 +65,7 @@ class Home extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <div className="row d-flex justify-content-center">
+                <div align="center">
                     <h1>Welcome!</h1>
                     <br />
                     <div className="text-start" style={{ width: '300px' }}>
@@ -95,8 +99,8 @@ class Home extends Component {
                         <button onClick={this.register} className="btn btn-outline-dark ms-2">
                             Register
                         </button>
+                        {this.state.errorMsg === "" ? null : <p style={{ color: "#ff0000" }}>{this.state.errorMsg}</p>}
                     </div>
-
                 </div>
             </div>
         )

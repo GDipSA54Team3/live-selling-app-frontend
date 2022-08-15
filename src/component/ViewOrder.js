@@ -8,6 +8,7 @@ class ViewOrder extends Component {
         super(props);
         this.retrieveOrderProducts = this.retrieveOrderProducts.bind(this);
         this.updateOrderStatus = this.updateOrderStatus.bind(this);
+        this.getTotalOrderCost = this.getTotalOrderCost.bind(this);
 
         this.state = {
             currentUser: {
@@ -20,7 +21,8 @@ class ViewOrder extends Component {
                 id: "",
                 customerName: "",
                 status: "",
-            }
+            },
+            totalCost: 0
         }
     }
 
@@ -56,7 +58,6 @@ class ViewOrder extends Component {
             }).catch(e => {
                 console.log(e);
             });
-
         }
     }
 
@@ -66,11 +67,22 @@ class ViewOrder extends Component {
                 this.setState({
                     orderProducts: response.data
                 });
+                this.getTotalOrderCost(response.data);
                 console.log(response.data);
             })
             .catch(e => {
                 console.log(e);
             });
+    }
+
+    getTotalOrderCost(e) {
+        let cost = 0;
+        for (let i = 0; i < e.length; i++) {
+            cost += e[i].quantity * e[i].product.price;
+        }
+        this.setState({
+            totalCost: cost
+        });
     }
 
     updateOrderStatus(e1, e2) {
@@ -87,6 +99,7 @@ class ViewOrder extends Component {
                 <h2>List Of Ordered Products:</h2>
                 <p>Order ID: {this.state.currentOrder.id}</p>
                 <p>Customer: {this.state.currentOrder.customerName}</p>
+                <p>Total Cost: S${this.state.totalCost.toFixed(2)}</p>
                 <br />
                 <div className="d-flex mb-3">
                     <div>
@@ -125,7 +138,7 @@ class ViewOrder extends Component {
                                     <td>{item.product.category}</td>
                                     <td className="text-truncate">{item.product.description}</td>
                                     <td>S${item.product.price.toFixed(2)}</td>
-                                    <td>{item.product.quantity}</td>
+                                    <td>{item.quantity}</td>
                                     {/* <td>
                                         <div style={{ whiteSpace: 'nowrap' }}>
                                             <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}>Update</button>
