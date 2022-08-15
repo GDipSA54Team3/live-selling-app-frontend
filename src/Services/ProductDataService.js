@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const PRODUCT_API_BASE_URL = "http://localhost:8080/api/product";
+const PRODUCT_API_BASE_URL = "https://livestream-prototype.azurewebsites.net/api/product";
 
 class ProductService {
 
