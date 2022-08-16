@@ -213,7 +213,7 @@ class MyStore extends Component {
                                             <td>
                                                 <div style={{ whiteSpace: 'nowrap' }}>
                                                     <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>
-                                                    <button className="btn btn-dark ms-2" onClick={null}>Reject</button>
+                                                    <button className="btn btn-dark ms-2" onClick={() => this.updateOrderStatus(order.id, "REJECT")}>Reject</button>
                                                 </div>
                                             </td>
                                         </tr>

@@ -123,7 +123,7 @@ class EditProduct extends Component {
         this.state.currentProduct.price !== 0) {
             ProductDataService.editProduct(this.state.currentProduct.id, this.state.currentProduct).then(response => {
                 if (response.status === 200) {
-                    this.props.navigate('/mystore');
+                    this.props.navigate('/productlist');
                 }
             }).catch(e => {
                 console.log(e);

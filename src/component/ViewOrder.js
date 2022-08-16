@@ -110,7 +110,7 @@ class ViewOrder extends Component {
                             (this.state.currentOrder.status === "CONFIRMED") ? null :
                                 <Stack direction="horizontal" gap={2}>
                                     <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "CONFIRMED")} className="btn btn-outline-dark">Accept</button>
-                                    <button onClick={null} className="btn btn-outline-dark">Reject</button>
+                                    <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "REJECT")} className="btn btn-outline-dark">Reject</button>
                                 </Stack>
                         }
                     </div>
