@@ -30,7 +30,7 @@ class MyStore extends Component {
             orders: [],
             currentPage: 1,
             itemsPerPage: 5,
-            search:""
+            search: ""
         }
 
     }
@@ -132,7 +132,7 @@ class MyStore extends Component {
         })
     };
 
-  onChangeSearch(e) {
+    onChangeSearch(e) {
         this.setState({
             search: e.target.value
         });
@@ -215,18 +215,18 @@ class MyStore extends Component {
                         <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
                         <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark">Order History</button>
                         <div className="form-group">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="search"
-                                    required
-                                    value={this.state.search}
-                                    placeholder= "Search orders"
-                                    onChange={this.onChangeSearch}
-                                    name="search"
-                                />
-                            </div>
-                            <button onClick={this.searchOrder} className="btn btn-outline-dark">Search <FontAwesomeIcon icon={faMagnifyingGlass}/></button>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="search"
+                                required
+                                value={this.state.search}
+                                placeholder="Search orders"
+                                onChange={this.onChangeSearch}
+                                name="search"
+                            />
+                        </div>
+                        <button onClick={this.searchOrder} className="btn btn-outline-dark">Search <FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                     </Stack>
                     <br />
                     <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>

@@ -25,7 +25,7 @@ class OrderDataService {
     }
 
     searchOrder(search, id){
-        return axios.put(ORDER_API_BASE_URL + "/searchorder/" + id, search);
+        return axios.post(ORDER_API_BASE_URL + "/searchorder/" + id, search);
     }
 }
 
