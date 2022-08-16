@@ -5,7 +5,7 @@ import OrderDataService from '../Services/OrderDataService';
 import UserDataService from '../Services/UserDataService';
 import { withRouter } from './withRouter';
 import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast } from "@fortawesome/free-solid-svg-icons";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
@@ -16,6 +16,9 @@ class MyStore extends Component {
         this.editStream = this.editStream.bind(this);
         this.getOrderList = this.getOrderList.bind(this);
         this.updateOrderStatus = this.updateOrderStatus.bind(this);
+        this.onChangeSearch = this.onChangeSearch.bind(this);
+        this.searchOrder = this.searchOrder.bind(this);
+
 
         this.state = {
             currentUser: {
@@ -26,7 +29,8 @@ class MyStore extends Component {
             streams: [],
             orders: [],
             currentPage: 1,
-            itemsPerPage: 5
+            itemsPerPage: 5,
+            search:""
         }
 
     }
@@ -128,6 +132,28 @@ class MyStore extends Component {
         })
     };
 
+  onChangeSearch(e) {
+        this.setState({
+            search: e.target.value
+        });
+    }
+
+    searchOrder() {
+        var data = {
+            search: this.state.search,
+        };
+        OrderDataService.searchOrder(data, this.state.currentUser.id).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    orders: response.data,
+                });
+            }
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+
     render() {
         const { orders, currentPage, itemsPerPage } = this.state;
         const lastIndex = currentPage * itemsPerPage;
@@ -188,6 +214,19 @@ class MyStore extends Component {
                         <h2 id="outstanding_orders">Outstanding Order List:</h2>
                         <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
                         <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark">Order History</button>
+                        <div className="form-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="search"
+                                    required
+                                    value={this.state.search}
+                                    placeholder= "Search orders"
+                                    onChange={this.onChangeSearch}
+                                    name="search"
+                                />
+                            </div>
+                            <button onClick={this.searchOrder} className="btn btn-outline-dark">Search <FontAwesomeIcon icon={faMagnifyingGlass}/></button>
                     </Stack>
                     <br />
                     <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>

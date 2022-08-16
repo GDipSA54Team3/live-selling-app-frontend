@@ -23,6 +23,10 @@ class OrderDataService {
     updateOrderStatus(orderid, status) {
         return axios.put(ORDER_API_BASE_URL + "/updateorderstatus/" + orderid + "/" + status);
     }
+
+    searchOrder(search, id){
+        return axios.put(ORDER_API_BASE_URL + "/searchorder/" + id, search);
+    }
 }
 
 export default new OrderDataService();
