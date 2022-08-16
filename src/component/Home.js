@@ -21,7 +21,7 @@ class Home extends Component {
 
     componentDidMount() {
         if (sessionStorage.getItem('user') !== null) {
-            this.props.navigate('/mystore');
+            this.props.navigate('/verification');
         }
     }
 
@@ -45,7 +45,7 @@ class Home extends Component {
         LoginDataService.loginCheck(data).then(response => {
             if (response.status === 200) {
                 sessionStorage.setItem('user', JSON.stringify(response.data))
-                this.props.navigate('/mystore');
+                this.props.navigate('/verification');
             }
             console.log(response.data);
         }).catch(e => {

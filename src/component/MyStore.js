@@ -36,25 +36,29 @@ class MyStore extends Component {
             this.props.navigate('/home');
         } else {
             const user = JSON.parse(sessionStorage.getItem('user'));
-            this.setState(function (prevState) {
-                return {
-                    currentUser: {
-                        ...prevState.currentUser,
-                        id: user.id,
-                        firstName: user.firstName,
-                        lastName: user.lastName
+            if (user.isVerified === false) {
+                this.props.navigate('/home');
+            } else {
+                this.setState(function (prevState) {
+                    return {
+                        currentUser: {
+                            ...prevState.currentUser,
+                            id: user.id,
+                            firstName: user.firstName,
+                            lastName: user.lastName
+                        }
                     }
-                }
-            });
-            UserDataService.getAllUserStreamsPending(user.id).then(response => {
-                this.setState({
-                    streams: response.data
                 });
-                console.log(response.data);
-            }).catch(e => {
-                console.log(e);
-            });
-            this.getOrderList(user.id);
+                UserDataService.getAllUserStreamsPending(user.id).then(response => {
+                    this.setState({
+                        streams: response.data
+                    });
+                    console.log(response.data);
+                }).catch(e => {
+                    console.log(e);
+                });
+                this.getOrderList(user.id);
+            }
         }
     }
 

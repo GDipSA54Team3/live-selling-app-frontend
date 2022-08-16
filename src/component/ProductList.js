@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ProductDataService from "../Services/ProductDataService"
 import { withRouter } from "./withRouter";
 import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faSort } from "@fortawesome/free-solid-svg-icons";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faSort, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Stack from 'react-bootstrap/Stack';
 
@@ -16,6 +16,8 @@ class ProductList extends Component {
         this.sortByProductCat = this.sortByProductCat.bind(this);
         this.sortByProductPrice = this.sortByProductPrice.bind(this);
         this.sortByProductQty = this.sortByProductQty.bind(this);
+        this.onChangeSearch = this.onChangeSearch.bind(this);
+        this.searchProduct = this.searchProduct.bind(this);
 
         this.state = {
             currentUser: {
@@ -26,7 +28,8 @@ class ProductList extends Component {
             products: [],
             sorted: "ascending",
             currentPage: 1,
-            productsPerPage: 5
+            productsPerPage: 5,
+            search: ""
         }
     }
 
@@ -132,6 +135,27 @@ class ProductList extends Component {
         });
     }
 
+    onChangeSearch(e) {
+        this.setState({
+            search: e.target.value
+        });
+    }
+
+    searchProduct() {
+        var data = {
+            search: this.state.search,
+        };
+        ProductDataService.searchProduct(data, this.state.currentUser.id).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    products: response.data,
+                });
+            }
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
     changePage = event => {
         this.setState({
             [event.target.name]: parseInt(event.target.value),
@@ -186,6 +210,19 @@ class ProductList extends Component {
                     </div>
                     <div className="ms-auto">
                         <Stack direction="horizontal" gap={2}>
+                            <div className="form-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="search"
+                                    required
+                                    value={this.state.search}
+                                    placeholder= "Search products"
+                                    onChange={this.onChangeSearch}
+                                    name="search"
+                                />
+                            </div>
+                            <button onClick={this.searchProduct} className="btn btn-outline-dark">Search <FontAwesomeIcon icon={faMagnifyingGlass}/></button>
                             <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark">Add Product</button>
                             <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
                         </Stack>

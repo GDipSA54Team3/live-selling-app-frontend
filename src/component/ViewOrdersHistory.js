@@ -44,7 +44,7 @@ class ViewOrdersHistory extends Component {
     }
 
     retrieveOrderProductsHistory(e) {
-        OrderDataService.getChannelOrdersConfirmedByUserId(e)
+        OrderDataService.getChannelOrdersHistory(e)
             .then(response => {
                 this.setState({
                     orders: response.data
