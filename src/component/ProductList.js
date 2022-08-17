@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ProductDataService from "../Services/ProductDataService"
 import { withRouter } from "./withRouter";
 import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faSort, faMagnifyingGlass, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faSort, faMagnifyingGlass, faRefresh, faPlus, faPenToSquare, faTrashCan, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Stack from 'react-bootstrap/Stack';
 import NavBar from "./NavBar";
@@ -208,14 +208,15 @@ class ProductList extends Component {
                 <div className="container mt-3">
                     <div className="text-start">
                         <h2>List Of Products: </h2>
+                        <br/>
                         <div className="d-flex mb-3">
                             <div>
-                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
+                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                             </div>
                             <div className="ms-auto">
                                 <Stack direction="horizontal" gap={2}>
                                     <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
-                                    <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark">Add Product</button>
+                                    <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark"><FontAwesomeIcon icon={faPlus} /> Add Product</button>
                                     <div className="form-group">
                                         <input
                                             type="text"
@@ -257,8 +258,10 @@ class ProductList extends Component {
                                                 <td>S${item.price.toFixed(2)}</td>
                                                 <td>{item.quantity}</td>
                                                 <td>
-                                                    <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}>Update</button>
-                                                    <button className="btn btn-dark ms-2" onClick={() => this.deleteProduct(item.id)}>Remove</button>
+                                                    <Stack direction="horizontal" gap={2}>
+                                                        <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}><FontAwesomeIcon icon={faPenToSquare} /> Edit</button>
+                                                        <button className="btn btn-dark" onClick={() => this.deleteProduct(item.id)}><FontAwesomeIcon icon={faTrashCan} /> Delete</button>
+                                                    </Stack>
                                                 </td>
                                             </tr>
                                         ))

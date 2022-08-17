@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import UserDataService from '../Services/UserDataService';
 import { withRouter } from './withRouter';
-// import dateFormat from 'dateformat';
 import moment from "moment";
 import NavBar from './NavBar';
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class UpdateStream extends Component {
     constructor(props) {
@@ -131,9 +132,7 @@ class UpdateStream extends Component {
                         <button onClick={this.submit} className="btn btn-dark">
                             Edit Stream
                         </button>
-                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}>
-                            Back
-                        </button>
+                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                     </div>
                 </div>
             </div>

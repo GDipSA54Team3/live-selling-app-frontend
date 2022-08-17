@@ -1,13 +1,13 @@
+import { faArchive, faBackwardFast, faCheck, faClipboard, faForwardFast, faListUl, faMagnifyingGlass, faPenToSquare, faPlus, faRefresh, faStepBackward, faStepForward, faTrashCan, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dateFormat from 'dateformat';
 import React, { Component } from 'react';
+import { Button, Card, FormControl, InputGroup } from "react-bootstrap";
 import Stack from 'react-bootstrap/Stack';
 import OrderDataService from '../Services/OrderDataService';
 import UserDataService from '../Services/UserDataService';
-import { withRouter } from './withRouter';
-import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faMagnifyingGlass, faRefresh, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavBar from './NavBar';
+import { withRouter } from './withRouter';
 
 
 class MyStore extends Component {
@@ -181,8 +181,8 @@ class MyStore extends Component {
                     <div className="text-start">
                         <h1>Welcome, {this.state.currentUser.firstName}!</h1>
                         <Stack direction="horizontal" gap={2}>
-                            <button onClick={() => this.props.navigate('/productlist')} className="btn btn-dark">Manage Products</button>
-                            <button onClick={() => this.props.navigate('/newstream')} className="btn btn-dark">Add Stream</button>
+                            <button onClick={() => this.props.navigate('/productlist')} className="btn btn-dark"><FontAwesomeIcon icon={faClipboard} /> Manage Products</button>
+                            <button onClick={() => this.props.navigate('/newstream')} className="btn btn-dark"><FontAwesomeIcon icon={faPlus} /> Add Stream</button>
                         </Stack>
                         <br />
                         <br />
@@ -190,7 +190,7 @@ class MyStore extends Component {
                         <Stack direction="horizontal" gap={2}>
                             <h2 id="scheduled_streams">Scheduled streams: </h2>
                             <button onClick={() => this.getStreamList(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
-                            <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button>
+                            <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark"><FontAwesomeIcon icon={faPlus} /> Add Stream</button>
                         </Stack>
                         <br />
                         <div className="row">
@@ -226,7 +226,7 @@ class MyStore extends Component {
                                 <Stack direction="horizontal" gap={2}>
                                     <h2 id="outstanding_orders">Outstanding Order List:</h2>
                                     <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
-                                    <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark">Order History</button>
+                                    <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark"><FontAwesomeIcon icon={faArchive} /> Order History</button>
                                 </Stack>
                             </div>
                             <div className="ms-auto">
@@ -271,11 +271,11 @@ class MyStore extends Component {
                                                 <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
                                                 <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
                                                 <td>{order.status}</td>
-                                                <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}>View</button></td>
+                                                <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}><FontAwesomeIcon icon={faListUl} /> View</button></td>
                                                 <td>
                                                     <div style={{ whiteSpace: 'nowrap' }}>
-                                                        <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>
-                                                        <button className="btn btn-dark ms-2" onClick={() => this.updateOrderStatus(order.id, "REJECT")}>Reject</button>
+                                                        <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}><FontAwesomeIcon icon={faCheck} /> Accept</button>
+                                                        <button className="btn btn-dark ms-2" onClick={() => this.updateOrderStatus(order.id, "REJECT")}><FontAwesomeIcon icon={faXmark} /> Reject</button>
                                                     </div>
                                                 </td>
                                             </tr>

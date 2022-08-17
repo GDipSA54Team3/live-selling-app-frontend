@@ -1,8 +1,10 @@
+import { faCheck, faXmark, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react';
-import OrderDataService from '../Services/OrderDataService';
 import Stack from 'react-bootstrap/Stack';
-import { withRouter } from './withRouter';
+import OrderDataService from '../Services/OrderDataService';
 import NavBar from './NavBar';
+import { withRouter } from './withRouter';
 
 class ViewOrder extends Component {
     constructor(props) {
@@ -107,14 +109,14 @@ class ViewOrder extends Component {
                         <br />
                         <div className="d-flex mb-3">
                             <div>
-                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
+                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                             </div>
                             <div className="ms-auto">
                                 {
                                     (this.state.currentOrder.status === "CONFIRMED") ? null :
                                         <Stack direction="horizontal" gap={2}>
-                                            <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "CONFIRMED")} className="btn btn-outline-dark">Accept</button>
-                                            <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "REJECT")} className="btn btn-outline-dark">Reject</button>
+                                            <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "CONFIRMED")} className="btn btn-outline-dark"><FontAwesomeIcon icon={faCheck} /> Accept</button>
+                                            <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "REJECT")} className="btn btn-outline-dark"><FontAwesomeIcon icon={faXmark} /> Reject</button>
                                         </Stack>
                                 }
                             </div>
@@ -155,9 +157,7 @@ class ViewOrder extends Component {
                             </tbody>
                         </table>
 
-                        <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>
-                            Back
-                        </button>
+                        <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                     </div>
                 </div>
             </div>

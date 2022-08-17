@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import ProductDataService from "../Services/ProductDataService";
 import NavBar from "./NavBar";
 import { withRouter } from './withRouter';
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class EditProduct extends Component {
     constructor(props) {
@@ -221,9 +223,7 @@ class EditProduct extends Component {
                         <button className="btn btn-dark" onClick={this.submit}>
                             Update
                         </button>
-                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}>
-                            Back
-                        </button>
+                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                     </div>
                 </div>
             </div>
