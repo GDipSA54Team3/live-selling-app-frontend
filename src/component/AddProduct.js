@@ -1,3 +1,5 @@
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from "react";
 import ProductDataService from "../Services/ProductDataService";
 import NavBar from "./NavBar";
@@ -202,12 +204,8 @@ class AddProduct extends Component {
                                 onChange={this.onChangeQuantity}
                             />
                         </div>
-                        <button className="btn btn-dark" onClick={this.submit}>
-                            Add It!
-                        </button>
-                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}>
-                            Back
-                        </button>
+                        <button className="btn btn-dark" onClick={this.submit}>Add It!</button>
+                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from './withRouter';
 import OrderDataService from '../Services/OrderDataService';
 import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast } from "@fortawesome/free-solid-svg-icons";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faCircleInfo, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dateFormat from 'dateformat';
 import NavBar from './NavBar';
@@ -110,7 +110,7 @@ class ViewOrdersHistory extends Component {
                         <br />
                         <div className="d-flex mb-3">
                             <div>
-                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
+                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                             </div>
                         </div>
 
@@ -137,7 +137,7 @@ class ViewOrdersHistory extends Component {
                                                 <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
                                                 <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
                                                 <td>{order.status}</td>
-                                                <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}>View</button></td>
+                                                <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}><FontAwesomeIcon icon={faCircleInfo} /> View</button></td>
                                                 {/* <td>
                                             <div style={{ whiteSpace: 'nowrap' }}>
                                                 <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>

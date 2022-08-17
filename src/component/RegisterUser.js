@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import UserDataService from '../Services/UserDataService';
 import NavBar from './NavBar';
 import { withRouter } from './withRouter';
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 class RegisterUser extends Component {
@@ -234,9 +236,7 @@ class RegisterUser extends Component {
                             <button onClick={this.submit} className="btn btn-dark my-2">
                                 Submit
                             </button>
-                            <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}>
-                                Back
-                            </button>
+                            <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                         </div>
                     </div>
                 </div>
