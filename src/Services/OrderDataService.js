@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ORDER_API_BASE_URL = "https://livestream-prototype.azurewebsites.net/api/orders";
+const ORDER_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api/orders";
 
 class OrderDataService {
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const LOGIN_API_BASE_URL = "https://livestream-prototype.azurewebsites.net/api"
+const LOGIN_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api"
 
 class LoginDataService {
     loginCheck(LoginBag) {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const USER_API_BASE_URL = "https://livestream-prototype.azurewebsites.net/api/user"
+const USER_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api/user"
 
 class UserDataService {
     getAllUserStreamsPending(id) {
