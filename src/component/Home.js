@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import LoginDataService from "../Services/LoginDataService";
 import NavBar from "./NavBar";
 import { withRouter } from './withRouter';
+import { faRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 class Home extends Component {
@@ -96,12 +98,8 @@ class Home extends Component {
                                     name="password"
                                 />
                             </div>
-                            <button onClick={this.submit} className="btn btn-dark my-2">
-                                Sign in
-                            </button>
-                            <button onClick={this.register} className="btn btn-outline-dark ms-2">
-                                Register
-                            </button>
+                            <button onClick={this.submit} className="btn btn-dark my-2"><FontAwesomeIcon icon={faRightToBracket} /> Sign in</button>
+                            <button onClick={this.register} className="btn btn-outline-dark ms-2"><FontAwesomeIcon icon={faUserPlus} /> Register</button>
                             {this.state.errorMsg === "" ? null : <p style={{ color: "#ff0000" }}>{this.state.errorMsg}</p>}
                         </div>
                     </div>

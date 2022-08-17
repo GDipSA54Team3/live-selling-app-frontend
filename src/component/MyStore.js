@@ -5,7 +5,7 @@ import OrderDataService from '../Services/OrderDataService';
 import UserDataService from '../Services/UserDataService';
 import { withRouter } from './withRouter';
 import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faMagnifyingGlass, faRefresh, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavBar from './NavBar';
 
@@ -19,6 +19,7 @@ class MyStore extends Component {
         this.updateOrderStatus = this.updateOrderStatus.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.searchOrder = this.searchOrder.bind(this);
+        this.getStreamList = this.getStreamList.bind(this);
 
 
         this.state = {
@@ -54,17 +55,21 @@ class MyStore extends Component {
                         }
                     }
                 });
-                UserDataService.getAllUserStreamsPending(user.id).then(response => {
-                    this.setState({
-                        streams: response.data
-                    });
-                    console.log(response.data);
-                }).catch(e => {
-                    console.log(e);
-                });
+                this.getStreamList(user.id);
                 this.getOrderList(user.id);
             }
         }
+    }
+
+    getStreamList(e) {
+        UserDataService.getAllUserStreamsPending(e).then(response => {
+            this.setState({
+                streams: response.data
+            });
+            console.log(response.data);
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
     deleteStream(e) {
@@ -182,7 +187,11 @@ class MyStore extends Component {
                         <br />
                         <br />
                         <br />
-                        <h2 id="scheduled_streams">Scheduled streams: <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button></h2>
+                        <Stack direction="horizontal" gap={2}>
+                            <h2 id="scheduled_streams">Scheduled streams: </h2>
+                            <button onClick={() => this.getStreamList(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
+                            <button onClick={() => this.props.navigate('/newstream')} className="btn btn-outline-dark">Add Stream</button>
+                        </Stack>
                         <br />
                         <div className="row">
                             {
@@ -200,8 +209,8 @@ class MyStore extends Component {
                                                         {dateFormat(stream.schedule, "h:MM TT")}
                                                     </Card.Text>
                                                     <Stack direction="horizontal" gap={2}>
-                                                        <Button variant="dark" onClick={() => this.editStream(stream.id)}>Edit</Button>
-                                                        <Button variant="dark" onClick={() => this.deleteStream(stream.id)}>Delete</Button>
+                                                        <Button variant="dark" onClick={() => this.editStream(stream.id)}><FontAwesomeIcon icon={faPenToSquare} /> Edit</Button>
+                                                        <Button variant="dark" onClick={() => this.deleteStream(stream.id)}><FontAwesomeIcon icon={faTrashCan} /> Delete</Button>
                                                     </Stack>
                                                 </Card.Body>
                                             </Card>
@@ -212,25 +221,32 @@ class MyStore extends Component {
                         <br />
                         <br />
                         <br />
-
-                        <Stack direction="horizontal" gap={2}>
-                            <h2 id="outstanding_orders">Outstanding Order List:</h2>
-                            <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
-                            <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark">Order History</button>
-                            <div className="form-group">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="search"
-                                    required
-                                    value={this.state.search}
-                                    placeholder="Search orders"
-                                    onChange={this.onChangeSearch}
-                                    name="search"
-                                />
+                        <div className="d-flex">
+                            <div>
+                                <Stack direction="horizontal" gap={2}>
+                                    <h2 id="outstanding_orders">Outstanding Order List:</h2>
+                                    <button onClick={() => this.getOrderList(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
+                                    <button onClick={() => this.props.navigate('/vieworderhistory')} className="btn btn-outline-dark">Order History</button>
+                                </Stack>
                             </div>
-                            <button onClick={this.searchOrder} className="btn btn-outline-dark">Search <FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-                        </Stack>
+                            <div className="ms-auto">
+                                <Stack direction="horizontal" gap={2}>
+                                    <div className="form-group">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="search"
+                                            required
+                                            value={this.state.search}
+                                            placeholder="Search orders"
+                                            onChange={this.onChangeSearch}
+                                            name="search"
+                                        />
+                                    </div>
+                                    <button onClick={this.searchOrder} className="btn btn-outline-dark"><FontAwesomeIcon icon={faMagnifyingGlass} /> Search</button>
+                                </Stack>
+                            </div>
+                        </div>
                         <br />
                         <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
                             <thead className="table-dark">

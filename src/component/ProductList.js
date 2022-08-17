@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ProductDataService from "../Services/ProductDataService"
 import { withRouter } from "./withRouter";
 import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faSort, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faSort, faMagnifyingGlass, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Stack from 'react-bootstrap/Stack';
 import NavBar from "./NavBar";
@@ -226,9 +226,9 @@ class ProductList extends Component {
                                             name="search"
                                         />
                                     </div>
-                                    <button onClick={this.searchProduct} className="btn btn-outline-dark">Search <FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+                                    <button onClick={this.searchProduct} className="btn btn-outline-dark"><FontAwesomeIcon icon={faMagnifyingGlass} /> Search</button>
                                     <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark">Add Product</button>
-                                    <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark">Refresh</button>
+                                    <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
                                 </Stack>
                             </div>
                         </div>
