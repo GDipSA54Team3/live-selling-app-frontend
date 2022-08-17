@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserDataService from '../Services/UserDataService';
+import NavBar from './NavBar';
 import { withRouter } from './withRouter';
 
 class UserVerification extends Component {
@@ -52,12 +53,19 @@ class UserVerification extends Component {
 
     render() {
         return (
-            (this.state.currentUser.isVerified === 1) ? null :
-                <div>
-                    <h1>Welcome, {this.state.currentUser.firstName}!</h1>
-                    <p>In order to unlock seller features, you have to verify your account</p>
-                    <button onClick={this.verifyAccount} className="btn btn-dark">Verify</button>
+            <div>
+                <NavBar />
+                <div className="container mt-3">
+                    {
+                        (this.state.currentUser.isVerified === 1) ? null :
+                            <>
+                                <h1>Welcome, {this.state.currentUser.firstName}!</h1>
+                                <p>In order to unlock seller features, you have to verify your account</p>
+                                <button onClick={this.verifyAccount} className="btn btn-dark">Verify</button>
+                            </>
+                    }
                 </div>
+            </div>
         );
     }
 }

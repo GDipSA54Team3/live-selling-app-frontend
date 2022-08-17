@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import OrderDataService from '../Services/OrderDataService';
 import Stack from 'react-bootstrap/Stack';
 import { withRouter } from './withRouter';
+import NavBar from './NavBar';
 
 class ViewOrder extends Component {
     constructor(props) {
@@ -95,65 +96,70 @@ class ViewOrder extends Component {
 
     render() {
         return (
-            <div className="text-start">
-                <h2>List Of Ordered Products:</h2>
-                <p>Order ID: {this.state.currentOrder.id}</p>
-                <p>Customer: {this.state.currentOrder.customerName}</p>
-                <p>Total Cost: S${this.state.totalCost.toFixed(2)}</p>
-                <br />
-                <div className="d-flex mb-3">
-                    <div>
-                        <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
-                    </div>
-                    <div className="ms-auto">
-                        {
-                            (this.state.currentOrder.status === "CONFIRMED") ? null :
-                                <Stack direction="horizontal" gap={2}>
-                                    <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "CONFIRMED")} className="btn btn-outline-dark">Accept</button>
-                                    <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "REJECT")} className="btn btn-outline-dark">Reject</button>
-                                </Stack>
-                        }
-                    </div>
-                </div>
+            <div>
+                <NavBar />
+                <div className="container mt-3">
+                    <div className="text-start">
+                        <h2>List Of Ordered Products:</h2>
+                        <p>Order ID: {this.state.currentOrder.id}</p>
+                        <p>Customer: {this.state.currentOrder.customerName}</p>
+                        <p>Total Cost: S${this.state.totalCost.toFixed(2)}</p>
+                        <br />
+                        <div className="d-flex mb-3">
+                            <div>
+                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
+                            </div>
+                            <div className="ms-auto">
+                                {
+                                    (this.state.currentOrder.status === "CONFIRMED") ? null :
+                                        <Stack direction="horizontal" gap={2}>
+                                            <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "CONFIRMED")} className="btn btn-outline-dark">Accept</button>
+                                            <button onClick={() => this.updateOrderStatus(this.state.currentOrder.id, "REJECT")} className="btn btn-outline-dark">Reject</button>
+                                        </Stack>
+                                }
+                            </div>
+                        </div>
 
-                <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
-                    <thead className="table-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            {/* <th>Actions</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {(this.state.orderProducts.length === 0) ?
-                            <tr align="center">
-                                <td colSpan="5">No Products Available</td>
-                            </tr> :
-                            this.state.orderProducts.map((item, i) => (
-                                <tr key={i}>
-                                    <td className="text-truncate">{item.product.name}</td>
-                                    <td>{item.product.category}</td>
-                                    <td className="text-truncate">{item.product.description}</td>
-                                    <td>S${item.product.price.toFixed(2)}</td>
-                                    <td>{item.quantity}</td>
-                                    {/* <td>
+                        <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
+                            <thead className="table-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    {/* <th>Actions</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {(this.state.orderProducts.length === 0) ?
+                                    <tr align="center">
+                                        <td colSpan="5">No Products Available</td>
+                                    </tr> :
+                                    this.state.orderProducts.map((item, i) => (
+                                        <tr key={i}>
+                                            <td className="text-truncate">{item.product.name}</td>
+                                            <td>{item.product.category}</td>
+                                            <td className="text-truncate">{item.product.description}</td>
+                                            <td>S${item.product.price.toFixed(2)}</td>
+                                            <td>{item.quantity}</td>
+                                            {/* <td>
                                         <div style={{ whiteSpace: 'nowrap' }}>
                                             <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}>Update</button>
                                             <button className="btn btn-dark ms-2" onClick={() => this.deleteProduct(item.id)}>Remove</button>
                                         </div>
                                     </td> */}
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
 
-                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>
-                    Back
-                </button>
+                        <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>
+                            Back
+                        </button>
+                    </div>
+                </div>
             </div>
         );
     }
