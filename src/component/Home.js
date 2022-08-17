@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import LoginDataService from "../Services/LoginDataService";
+import NavBar from "./NavBar";
 import { withRouter } from './withRouter';
 
 
@@ -64,42 +65,45 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="container-fluid">
-                <div align="center">
-                    <h1>Welcome!</h1>
-                    <br />
-                    <div className="text-start" style={{ width: '300px' }}>
-                        <div className="form-group my-2">
-                            <label htmlFor="username">Username:</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="username"
-                                required
-                                value={this.state.username}
-                                onChange={this.onChangeUsername}
-                                name="username"
-                            />
+            <div>
+                <NavBar />
+                <div className="container mt-3">
+                    <div align="center">
+                        <h1>Welcome!</h1>
+                        <br />
+                        <div className="text-start" style={{ width: '300px' }}>
+                            <div className="form-group my-2">
+                                <label htmlFor="username">Username:</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="username"
+                                    required
+                                    value={this.state.username}
+                                    onChange={this.onChangeUsername}
+                                    name="username"
+                                />
+                            </div>
+                            <div className="form-group my-2">
+                                <label htmlFor="password">Password:</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="password"
+                                    required
+                                    value={this.state.password}
+                                    onChange={this.onChangePassword}
+                                    name="password"
+                                />
+                            </div>
+                            <button onClick={this.submit} className="btn btn-dark my-2">
+                                Sign in
+                            </button>
+                            <button onClick={this.register} className="btn btn-outline-dark ms-2">
+                                Register
+                            </button>
+                            {this.state.errorMsg === "" ? null : <p style={{ color: "#ff0000" }}>{this.state.errorMsg}</p>}
                         </div>
-                        <div className="form-group my-2">
-                            <label htmlFor="password">Password:</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="password"
-                                required
-                                value={this.state.password}
-                                onChange={this.onChangePassword}
-                                name="password"
-                            />
-                        </div>
-                        <button onClick={this.submit} className="btn btn-dark my-2">
-                            Sign in
-                        </button>
-                        <button onClick={this.register} className="btn btn-outline-dark ms-2">
-                            Register
-                        </button>
-                        {this.state.errorMsg === "" ? null : <p style={{ color: "#ff0000" }}>{this.state.errorMsg}</p>}
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
 import { faStepBackward, faStepForward, faBackwardFast, faForwardFast } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dateFormat from 'dateformat';
+import NavBar from './NavBar';
 
 class ViewOrdersHistory extends Component {
     constructor(props) {
@@ -74,7 +75,7 @@ class ViewOrdersHistory extends Component {
             currentPage: totalPages,
         });
     }
-    
+
     prevPage = () => {
         this.setState({
             currentPage: this.state.currentPage - 1,
@@ -101,82 +102,87 @@ class ViewOrdersHistory extends Component {
         };
 
         return (
-            <div className="text-start">
-                <h2>Orders History:</h2>
-                <br />
-                <div className="d-flex mb-3">
-                    <div>
-                        <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
-                    </div>
-                </div>
+            <div>
+                <NavBar />
+                <div className="container mt-3">
+                    <div className="text-start">
+                        <h2>Orders History:</h2>
+                        <br />
+                        <div className="d-flex mb-3">
+                            <div>
+                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}>Back</button>
+                            </div>
+                        </div>
 
-                <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
-                    <thead className="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Customer</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Product</th>
-                            {/* <th>Actions</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            (this.state.orders.length === 0) ?
-                                <tr align="center">
-                                    <td colSpan="5">No Orders Available</td>
-                                </tr> :
-                                currentOrderPage.map((order, i) => (
-                                    <tr key={i}>
-                                        <td className="text-truncate">{order.id}</td>
-                                        <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
-                                        <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
-                                        <td>{order.status}</td>
-                                        <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}>View</button></td>
-                                        {/* <td>
+                        <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
+                            <thead className="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Product</th>
+                                    {/* <th>Actions</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    (this.state.orders.length === 0) ?
+                                        <tr align="center">
+                                            <td colSpan="5">No Orders Available</td>
+                                        </tr> :
+                                        currentOrderPage.map((order, i) => (
+                                            <tr key={i}>
+                                                <td className="text-truncate">{order.id}</td>
+                                                <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
+                                                <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
+                                                <td>{order.status}</td>
+                                                <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}>View</button></td>
+                                                {/* <td>
                                             <div style={{ whiteSpace: 'nowrap' }}>
                                                 <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>
                                                 <button className="btn btn-dark ms-2" onClick={null}>Reject</button>
                                             </div>
                                         </td> */}
-                                    </tr>
-                                ))
+                                            </tr>
+                                        ))
+                                }
+                            </tbody>
+                        </table>
+
+                        {
+                            orders.length > 0 ? (
+                                <Card.Footer>
+                                    <div style={{ "float": "left" }}>
+                                        Showing Page {currentPage} of {totalPages}
+                                    </div>
+                                    <div style={{ float: "right" }}>
+                                        <InputGroup size="sm">
+                                            <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                                onClick={this.toFirstPage}>
+                                                <FontAwesomeIcon icon={faBackwardFast} />
+                                            </Button>
+                                            <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                                onClick={this.prevPage}>
+                                                <FontAwesomeIcon icon={faStepBackward} />
+                                            </Button>
+                                            <FormControl style={pageNumCss} name="currentPage" value={currentPage}
+                                                onChange={this.changePage} />
+                                            <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                                onClick={this.nextPage}>
+                                                <FontAwesomeIcon icon={faStepForward} />
+                                            </Button>
+                                            <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                                onClick={this.toLastPage}>
+                                                <FontAwesomeIcon icon={faForwardFast} />
+                                            </Button>
+                                        </InputGroup>
+                                    </div>
+                                </Card.Footer>) : null
                         }
-                    </tbody>
-                </table>
 
-                {
-                    orders.length > 0 ? (
-                        <Card.Footer>
-                            <div style={{ "float": "left" }}>
-                                Showing Page {currentPage} of {totalPages}
-                            </div>
-                            <div style={{ float: "right" }}>
-                                <InputGroup size="sm">
-                                    <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
-                                        onClick={this.toFirstPage}>
-                                        <FontAwesomeIcon icon={faBackwardFast} />
-                                    </Button>
-                                    <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
-                                        onClick={this.prevPage}>
-                                        <FontAwesomeIcon icon={faStepBackward} />
-                                    </Button>
-                                    <FormControl style={pageNumCss} name="currentPage" value={currentPage}
-                                        onChange={this.changePage} />
-                                    <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
-                                        onClick={this.nextPage}>
-                                        <FontAwesomeIcon icon={faStepForward} />
-                                    </Button>
-                                    <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
-                                        onClick={this.toLastPage}>
-                                        <FontAwesomeIcon icon={faForwardFast} />
-                                    </Button>
-                                </InputGroup>
-                            </div>
-                        </Card.Footer>) : null
-                }
-
+                    </div>
+                </div>
             </div>
         );
     }
