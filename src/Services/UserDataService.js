@@ -27,6 +27,10 @@ class UserDataService {
         return axios.post(USER_API_BASE_URL + "/register/" + channelName + "/" + username + "/" + password + "/" + address, body);
     }
 
+    verifyUser(id) {
+        return axios.put(USER_API_BASE_URL + "/verify/" + id);
+    }
+
 }
 
 export default new UserDataService();

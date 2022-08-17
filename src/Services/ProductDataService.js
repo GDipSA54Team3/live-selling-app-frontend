@@ -43,6 +43,10 @@ class ProductService {
     getProductsByUserIdQtySorted(id, order) {
         return axios.get(PRODUCT_API_BASE_URL + "/channelproductssortbyqty/" + id + "/" + order);
     }
+
+    searchProduct(search, id) {
+        return axios.post(PRODUCT_API_BASE_URL + "/searchproduct/" + id, search);
+    }
 }
 
 export default new ProductService();

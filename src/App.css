@@ -36,24 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-/* .navbar-nav{
-  color:azure;
-  justify-self:start;
-  margin-left:40px;
-  cursor:pointer;
-}
-.nav-item{
-  display: grid;
-  width:9.9vw;
-  margin-top:2px;
-  margin-left: 2rem;
-  margin-right: 2rem;
-}
-
-.nav-links{
-  color:azure;
-  text-decoration:none;
-  padding: 0.5rem 1rem;
-} */
-

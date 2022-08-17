@@ -8,8 +8,8 @@ class OrderDataService {
         return axios.get(ORDER_API_BASE_URL + "/channelordersuserpending/" + id);
     }
 
-    getChannelOrdersConfirmedByUserId(id) {
-        return axios.get(ORDER_API_BASE_URL + "/channelordersuserconfirmed/" + id);
+    getChannelOrdersHistory(id) {
+        return axios.get(ORDER_API_BASE_URL + "/channelordersuserhistory/" + id);
     }
 
     getProductsInOrder(id) {
@@ -22,6 +22,10 @@ class OrderDataService {
 
     updateOrderStatus(orderid, status) {
         return axios.put(ORDER_API_BASE_URL + "/updateorderstatus/" + orderid + "/" + status);
+    }
+
+    searchOrder(search, id){
+        return axios.post(ORDER_API_BASE_URL + "/searchorder/" + id, search);
     }
 }
 
