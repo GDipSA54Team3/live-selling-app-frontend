@@ -25,7 +25,7 @@ function NavBar() {
                                         <li className="nav-item"><Link to={"/mystore"} className="nav-link"><FontAwesomeIcon icon={faStore} /> My Store</Link></li>
                                     </>
                             }
-                            <li className="nav-item"><Link onClick={logout} to={"/home"} className="nav-link"><FontAwesomeIcon icon={faRightFromBracket} /> Logout</Link></li>
+                            <li className="nav-item"><Link onClick={logout} to={"/home"} className="nav-link"><FontAwesomeIcon icon={faRightFromBracket} /> Logout {user.firstName}</Link></li>
                         </>
                 }
             </div>

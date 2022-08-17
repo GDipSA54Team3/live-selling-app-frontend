@@ -214,6 +214,8 @@ class ProductList extends Component {
                             </div>
                             <div className="ms-auto">
                                 <Stack direction="horizontal" gap={2}>
+                                    <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
+                                    <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark">Add Product</button>
                                     <div className="form-group">
                                         <input
                                             type="text"
@@ -227,8 +229,6 @@ class ProductList extends Component {
                                         />
                                     </div>
                                     <button onClick={this.searchProduct} className="btn btn-outline-dark"><FontAwesomeIcon icon={faMagnifyingGlass} /> Search</button>
-                                    <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark">Add Product</button>
-                                    <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
                                 </Stack>
                             </div>
                         </div>
