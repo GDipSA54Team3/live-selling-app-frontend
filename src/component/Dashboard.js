@@ -6,6 +6,7 @@ import '../Dash.css';
 import { withRouter } from './withRouter';
 import NavBar from "./NavBar";
 
+
 class Dashboard extends Component {
 
     constructor(props) {
@@ -46,14 +47,16 @@ class Dashboard extends Component {
         }
     }
     componentDidMount() {
-
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        if ((user === null)
-            || (user.isVerified === false)) {
+      
+        if (sessionStorage.getItem('user') === null) {
             this.props.navigate('/home');
-        }
-
+        } 
         else {
+            const user = JSON.parse(sessionStorage.getItem('user'));
+            if (user.isVerified === false) {
+                this.props.navigate('/home');
+            }
+            else {
             this.setState({
                 productCategory: "Clothing",
                 day: "SUN",
@@ -77,6 +80,7 @@ class Dashboard extends Component {
                 this.getPendingOrderCount();
 
             });
+            }
         }
     }
     getPendingOrderCount() {
@@ -246,150 +250,155 @@ class Dashboard extends Component {
     }
     render() {
         return (
-            <div>
-                <NavBar />
-                <div className={"div-background"}>
-                    <div className="container-fluid mt-3">
-                        <div className="d-flex justify-content-between">
-                            <div className="d-flex flex-column">
-                                <div className="p-2">
-                                    <h2>Welcome {this.state.currentUser.firstName}! </h2>
-                                    <div className={"div-whitebg"}>
-                                        <h4>My Rating</h4>
-                                        <h4>{this.state.rating}/5</h4>
-                                        <div>
-                                            {this.showStar()}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="p-2">
-                                    <div className={"div-grayfill"}>
-                                        <h4>My Popularity</h4>
-                                        <div className={"div-brown-font"}>
-                                            <p >{this.state.popsuggestion}</p>
-                                        </div>
-                                        <div>{this.state.polarityChart}</div>
-                                    </div>
-                                </div>
-                                <div className="p-2">
-                                    <div className={"div-lightBoarder"}>
-                                        <h4>Orders Pending Confirmation</h4>
-                                        <div className={"div-contentCenter"}>
-                                            <div className={"div-Round-pending"}>
-                                                <a href={"/mystore#outstanding_orders"}>
-                                                    {this.state.pendingOrderCount}</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="d-flex flex-column">
-                                <div className={"div-lightBoarder"}>
-                                    <h4>My Upcoming Streams</h4>
-                                    <div className={"div-whitebg"}>
-                                        <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
-                                            <thead className="table-dark">
-                                                <tr>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Time</th>
-                                                    <th scope="col">Title</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.streams.map((item, i) => (
-                                                    <tr key={i} className={"limited_tbl_row"}>
-                                                        <td> {dateFormat(item.schedule, "dd-mm-yyyy")}</td>
-                                                        <td>{dateFormat(item.schedule, "HH:MM")}</td>
-                                                        <td className={"limited_tbl_row"}>
-                                                            {item.title.length < 20 ? item.title : item.title.substring(0, 20) + "..."}
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <p>{parseInt(this.state.pendingStreamCount) - this.state.streams.length} More.. <a href={"/mystore#scheduled_streams"}>
-                                        View All</a></p>
-                                </div>
-
-                                <div className={"div-predcition"}>
-                                    <h4>Viewers and Orders Prediction</h4>
-                                    <br></br>
-                                    <div className="container">
-                                        <div className="row">
-                                            <div className="col">
-                                                <form className="d-flex flex-column">
-                                                    <label className="p-2">Product Category</label>
-                                                    <select className="p-2" id="inlineFormCustomSelectPref" name="product_category"
-                                                        defaultValue={this.state.productCategory} onChange={this.handleCategoryChange} >
-                                                        <option value="CLOTHING">Clothing</option>
-                                                        <option value="FOOD">Food</option>
-                                                        <option value="APPLIANCES">Home Appliances</option>
-                                                        <option value="FURNITURES">Furnitures</option>
-                                                        <option value="TECHNOLOGY">Electronics Devices</option>
-                                                        <option value="BABY">Baby Items and Toys</option>
-                                                        <option value="HEALTH">Health and Beauty</option>
-                                                        <option value="SPORTS">Sports Items</option>
-                                                        <option value="GROCERIES">Groceries</option>
-                                                        <option value="OTHERS">Others</option>
-                                                    </select>
-                                                    <label className="p-2">Day</label>
-                                                    <select className="p-2" id="inlineFormCustomSelectPref" name="day"
-                                                        defaultValue={this.state.day} onChange={this.handleDayChange}>
-                                                        <option value="SUN">Sunday</option>
-                                                        <option value="MON">Monday</option>
-                                                        <option value="TUE">Tuesday</option>
-                                                        <option value="WED">Wednesday</option>
-                                                        <option value="THU">Thursday</option>
-                                                        <option value="FRI">Friday</option>
-                                                        <option value="SAT">Saturday</option>
-                                                    </select>
-
-                                                    <label className="p-2">Streaming Period</label>
-                                                    <select className="p-2" id="inlineFormCustomSelectPref" name="time_period"
-                                                        defaultValue={this.state.streamingTime} onChange={this.handleStreamingTimeChange} >
-                                                        <option value="12am-6am">12am-6am</option>
-                                                        <option value="6am-12pm">6am-12pm</option>
-                                                        <option value="12pm-6pm">12pm-6pm</option>
-                                                        <option value="6pm-12am">6pm-12am</option>
-                                                    </select>
-                                                    <br></br>
-                                                </form>
-
-                                                <button className="btn btn-dark" onClick={this.predict}>Predict</button>
-                                            </div>
-                                            <div className="col">
-                                                <h5>Expected Orders:</h5>
-                                                <div className={"div-contentCenter"}>
-                                                    <div className={"div-Round"}>{this.state.predictionData[0]["order"]}</div>
-                                                </div>
-                                                <br></br>
-                                                <h5>Expected Viewers:</h5>
-                                                <div className={"div-contentCenter"}>
-                                                    <div className={"div-Round"}>{this.state.predictionData[1]["viewer"]}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="d-flex flex-column">
-                                <div className={"div-grayfill"}>
-                                    <div>
-                                        <h4>Platform Sales Statistics</h4>
-                                    </div>
-                                    <div>
-                                    </div>
-                                    <div>{this.state.orderStatisticsMovAvg}</div>
-                                    <div className={"div-graygapfill"}></div>
-                                    <div>{this.state.orderStatisticsTime}</div>
+            <div className="div-mainbg">
+                <NavBar/>           
+                           
+            <div className="container">
+            <div className="div-whitebg">    
+                <div className="row" style={{margin: '10px'}}>
+                    <div className="col" style={{margin: '5px'}}>
+                        <div className="row">
+                            <h2>Welcome {this.state.currentUser.firstName}! </h2>
+                            <div className={"div-whitebg"}>
+                                <h4>My Rating</h4>
+                                <h4>{this.state.rating}/5</h4>
+                                <div>
+                                    {this.showStar()}
                                 </div>
                             </div>
                         </div>
+                        <div className="row">
+                            <div className={"div-grayfill"}>
+                                <h4>My Popularity</h4>
+                                <div className={"div-brown-font"}>
+                                    <p >{this.state.popsuggestion}</p>
+                                </div>
+                                <div>{this.state.polarityChart}</div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className={"div-lightBoarder"}>
+                                <h4>Orders Pending Confirmation</h4>
+                                <div className={"div-contentCenter"}>
+                                    <div className={"div-Round-pending"}>
+                                        <a href={"/mystore#outstanding_orders"}>
+                                            {this.state.pendingOrderCount}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div className="col" style={{margin: '5px'}}>
+                        <div className="row">
+                        <div className={"div-lightBoarder-fixed"}>
+                            <h4>My Upcoming Streams</h4>
+                            <div className={"div-whitebg"}>
+                                <table className="table table-striped table-hover" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
+                                    <thead className="table-dark">
+                                        <tr>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Time</th>
+                                            <th scope="col">Title</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.state.streams.map((item, i) => (
+                                            <tr key={i} className={"limited_tbl_row"}>
+                                                <td> {dateFormat(item.schedule, "dd-mm-yyyy")}</td>
+                                                <td>{dateFormat(item.schedule, "HH:MM")}</td>
+                                                <td className={"limited_tbl_row"}>
+                                                    {item.title.length < 20 ? item.title : item.title.substring(0, 20) + "..."}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p>{parseInt(this.state.pendingStreamCount) - this.state.streams.length} More.. <a href={"/mystore#scheduled_streams"}>
+                                View All</a></p>
+                        </div>
+                        </div>                               
+                        <div className="row">                        
+                        <div className={"div-predcition"}>
+                            <h4>Viewers and Orders Prediction</h4>
+                            <br></br>
+                            <div className="container">
+                                <div className="row" >
+                                    <div className="col" >
+                                        <form className="d-flex flex-column">
+                                            <label className="p-2">Product Category</label>
+                                            <select className="p-2" id="inlineFormCustomSelectPref" name="product_category"
+                                                defaultValue={this.state.productCategory} onChange={this.handleCategoryChange} >
+                                                <option value="CLOTHING">Clothing</option>
+                                                <option value="FOOD">Food</option>
+                                                <option value="APPLIANCES">Home Appliances</option>
+                                                <option value="FURNITURES">Furnitures</option>
+                                                <option value="TECHNOLOGY">Electronics Devices</option>
+                                                <option value="BABY">Baby Items and Toys</option>
+                                                <option value="HEALTH">Health and Beauty</option>
+                                                <option value="SPORTS">Sports Items</option>
+                                                <option value="GROCERIES">Groceries</option>
+                                                <option value="OTHERS">Others</option>
+                                            </select>
+                                            <label className="p-2">Day</label>
+                                            <select className="p-2" id="inlineFormCustomSelectPref" name="day"
+                                                defaultValue={this.state.day} onChange={this.handleDayChange}>
+                                                <option value="SUN">Sunday</option>
+                                                <option value="MON">Monday</option>
+                                                <option value="TUE">Tuesday</option>
+                                                <option value="WED">Wednesday</option>
+                                                <option value="THU">Thursday</option>
+                                                <option value="FRI">Friday</option>
+                                                <option value="SAT">Saturday</option>
+                                            </select>
+
+                                            <label className="p-2">Streaming Period</label>
+                                            <select className="p-2" id="inlineFormCustomSelectPref" name="time_period"
+                                                defaultValue={this.state.streamingTime} onChange={this.handleStreamingTimeChange} >
+                                                <option value="12am-6am">12am-6am</option>
+                                                <option value="6am-12pm">6am-12pm</option>
+                                                <option value="12pm-6pm">12pm-6pm</option>
+                                                <option value="6pm-12am">6pm-12am</option>
+                                            </select>
+                                            <br></br>
+                                        </form>
+
+                                        <button className="btn btn-dark" onClick={this.predict}>Predict</button>
+                                    </div>
+                                    <div className="col">
+                                        <h5>Expected Orders:</h5>
+                                        <div className={"div-contentCenter"}>
+                                            <div className={"div-Round"}>{this.state.predictionData[0]["order"]}</div>
+                                        </div>
+                                        <br></br>
+                                        <h5>Expected Viewers:</h5>
+                                        <div className={"div-contentCenter"}>
+                                            <div className={"div-Round"}>{this.state.predictionData[1]["viewer"]}</div>
+                                        </div>
+                                    </div>                                      
+                                </div>   
+                                </div>                                                            
+                            </div>
+                        </div>
                     </div>
+                    <div className="col" style={{margin: '5px'}}>
+                        <div className="row">
+                        <div className={"div-grayfill-fixed"}>
+                            <div>
+                                <h4>Platform Sales Statistics</h4>
+                            </div>
+                            <div>
+                            </div>
+                            <div>{this.state.orderStatisticsMovAvg}</div>
+                            <div className={"div-graygapfill"}></div>
+                            <div>{this.state.orderStatisticsTime}</div>
+                        </div>
+                        </div>
+                    </div>                       
                 </div>
             </div>
-
+            </div>
+        </div>
         );
     }
 }
