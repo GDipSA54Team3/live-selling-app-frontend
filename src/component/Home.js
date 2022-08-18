@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import { withRouter } from './withRouter';
 import { faRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './Home.css';
 
 
 class Home extends Component {
@@ -68,41 +69,60 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <NavBar />
-                <div className="container mt-3">
-                    <div align="center">
-                        <h1>Welcome!</h1>
-                        <br />
-                        <div className="text-start" style={{ width: '300px' }}>
-                            <div className="form-group my-2">
-                                <label htmlFor="username">Username:</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="username"
-                                    required
-                                    value={this.state.username}
-                                    onChange={this.onChangeUsername}
-                                    name="username"
-                                />
-                            </div>
-                            <div className="form-group my-2">
-                                <label htmlFor="password">Password:</label>
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    id="password"
-                                    required
-                                    value={this.state.password}
-                                    onChange={this.onChangePassword}
-                                    name="password"
-                                />
-                            </div>
-                            <button onClick={this.submit} className="btn btn-dark my-2"><FontAwesomeIcon icon={faRightToBracket} /> Sign in</button>
-                            <button onClick={this.register} className="btn btn-outline-dark ms-2"><FontAwesomeIcon icon={faUserPlus} /> Register</button>
-                            {this.state.errorMsg === "" ? null : <p style={{ color: "#ff0000" }}>{this.state.errorMsg}</p>}
+                <div className="body-bg">
+                    <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
                         </div>
-                    </div>
+                        <NavBar />
+                        <div className="container_">
+                            <div className="container mt-3">
+                                <div align="center">
+                                    <h1>Welcome!</h1>
+                                    <br />
+                                    <div className="text-start" style={{ width: '300px' }}>
+                                        <div className="form-group my-2">
+                                            <label htmlFor="username">Username:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="username"
+                                                required
+                                                value={this.state.username}
+                                                onChange={this.onChangeUsername}
+                                                name="username"
+                                            />
+                                        </div>
+                                        <div className="form-group my-2">
+                                            <label htmlFor="password">Password:</label>
+                                            <input
+                                                type="password"
+                                                className="form-control"
+                                                id="password"
+                                                required
+                                                value={this.state.password}
+                                                onChange={this.onChangePassword}
+                                                name="password"
+                                            />
+                                        </div>
+                                        <button onClick={this.submit} className="btn btn-dark my-2"><FontAwesomeIcon icon={faRightToBracket} /> Sign in</button>
+                                        <button onClick={this.register} className="btn btn-outline-dark ms-2"><FontAwesomeIcon icon={faUserPlus} /> Register</button>
+                                        {this.state.errorMsg === "" ? null : <p style={{ color: "#ff0000" }}>{this.state.errorMsg}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         )
