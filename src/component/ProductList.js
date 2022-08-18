@@ -271,8 +271,8 @@ class ProductList extends Component {
 
                         {products.length > 0 ? (
                             <Card.Footer>
-                                <div style={{ "float": "left" }}>
-                                    Showing Page {currentPage} of {totalPages}
+                                <div style={{ float: "left" }}>
+                                    Showing Page {currentPage} of {totalPages} - Total {this.state.products.length} products
                                 </div>
                                 <div style={{ float: "right" }}>
                                     <InputGroup size="sm">

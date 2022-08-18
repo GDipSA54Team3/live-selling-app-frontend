@@ -165,14 +165,14 @@ class EditProduct extends Component {
                             </label>
                             <select className="form-select" aria-label="Default select example" name="product_category"
                                 value={this.state.currentProduct.category} onChange={this.onChangeCategory} >
-                                <option value="CLOTHING" >Clothing</option>
+                                <option value="CLOTHING">Clothing</option>
                                 <option value="FOOD">Food</option>
-                                <option value="APPLIANCES">Home Appliances</option>
+                                <option value="APPLIANCES">Appliances</option>
                                 <option value="FURNITURES">Furnitures</option>
-                                <option value="TECHNOLOGY">Electronics Devices</option>
-                                <option value="BABY">Baby Items and Toys</option>
-                                <option value="HEALTH">Health and Beauty</option>
-                                <option value="SPORTS">Sports Items</option>
+                                <option value="TECHNOLOGY">Technology</option>
+                                <option value="BABY">Baby</option>
+                                <option value="HEALTH">Health</option>
+                                <option value="SPORTS">Sports</option>
                                 <option value="GROCERIES">Groceries</option>
                                 <option value="OTHERS">Others</option>
                             </select>
