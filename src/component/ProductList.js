@@ -205,102 +205,118 @@ class ProductList extends Component {
         return (
             <div>
                 <NavBar />
-                <div className="container mt-3">
-                    <div className="text-start">
-                        <h2>List Of Products: </h2>
-                        <br/>
-                        <div className="d-flex mb-3">
-                            <div>
-                                <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
-                            </div>
-                            <div className="ms-auto">
-                                <Stack direction="horizontal" gap={2}>
-                                    <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
-                                    <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark"><FontAwesomeIcon icon={faPlus} /> Add Product</button>
-                                    <div className="form-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="search"
-                                            required
-                                            value={this.state.search}
-                                            placeholder="Search products"
-                                            onChange={this.onChangeSearch}
-                                            name="search"
-                                        />
+                <div className="body-bg">
+                    <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                        </div>
+                        <div className="container mt-3">
+                            <div className="text-start">
+                                <h2>List Of Products: </h2>
+                                <br />
+                                <div className="d-flex mb-3">
+                                    <div>
+                                        <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                                     </div>
-                                    <button onClick={this.searchProduct} className="btn btn-outline-dark"><FontAwesomeIcon icon={faMagnifyingGlass} /> Search</button>
-                                </Stack>
+                                    <div className="ms-auto">
+                                        <Stack direction="horizontal" gap={2}>
+                                            <button onClick={() => this.retrieveProducts(this.state.currentUser.id)} className="btn btn-outline-dark"><FontAwesomeIcon icon={faRefresh} /></button>
+                                            <button onClick={() => this.props.navigate('/addproduct')} className="btn btn-outline-dark"><FontAwesomeIcon icon={faPlus} /> Add Product</button>
+                                            <div className="form-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="search"
+                                                    required
+                                                    value={this.state.search}
+                                                    placeholder="Search products"
+                                                    onChange={this.onChangeSearch}
+                                                    name="search"
+                                                />
+                                            </div>
+                                            <button onClick={this.searchProduct} className="btn btn-outline-dark"><FontAwesomeIcon icon={faMagnifyingGlass} /> Search</button>
+                                        </Stack>
+                                    </div>
+                                </div>
+                                <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
+                                    <thead className="table-dark">
+                                        <tr>
+                                            <th onClick={this.sortByProductName}>Name <FontAwesomeIcon icon={faSort} /></th>
+                                            <th onClick={this.sortByProductCat}>Category <FontAwesomeIcon icon={faSort} /></th>
+                                            <th>Description</th>
+                                            <th onClick={this.sortByProductPrice}>Price <FontAwesomeIcon icon={faSort} /></th>
+                                            <th onClick={this.sortByProductQty}>Quantity <FontAwesomeIcon icon={faSort} /></th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            products.length === 0 ?
+                                                <tr align="center">
+                                                    <td colSpan="6">No Products Available</td>
+                                                </tr> :
+                                                currentProducts.map((item, i) => (
+                                                    <tr key={i}>
+                                                        <td>{item.name}</td>
+                                                        <td>{item.category}</td>
+                                                        <td>{item.description}</td>
+                                                        <td>S${item.price.toFixed(2)}</td>
+                                                        <td>{item.quantity}</td>
+                                                        <td>
+                                                            <Stack direction="horizontal" gap={2}>
+                                                                <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}><FontAwesomeIcon icon={faPenToSquare} /> Edit</button>
+                                                                <button className="btn btn-dark" onClick={() => this.deleteProduct(item.id)}><FontAwesomeIcon icon={faTrashCan} /> Delete</button>
+                                                            </Stack>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                        }
+                                    </tbody>
+                                </table>
+
+                                {products.length > 0 ? (
+                                    <Card.Footer>
+                                        <div style={{ "float": "left" }}>
+                                            Showing Page {currentPage} of {totalPages}
+                                        </div>
+                                        <div style={{ float: "right" }}>
+                                            <InputGroup size="sm">
+                                                <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                                    onClick={this.toFirstPage}>
+                                                    <FontAwesomeIcon icon={faBackwardFast} />
+                                                </Button>
+                                                <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
+                                                    onClick={this.prevPage}>
+                                                    <FontAwesomeIcon icon={faStepBackward} />
+                                                </Button>
+                                                <FormControl style={pageNumCss} name="currentPage" value={currentPage}
+                                                    onChange={this.changePage} />
+                                                <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                                    onClick={this.nextPage}>
+                                                    <FontAwesomeIcon icon={faStepForward} />
+                                                </Button>
+                                                <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
+                                                    onClick={this.toLastPage}>
+                                                    <FontAwesomeIcon icon={faForwardFast} />
+                                                </Button>
+                                            </InputGroup>
+                                        </div>
+                                    </Card.Footer>) : null}
                             </div>
                         </div>
-                        <table className="table table-striped" style={{ tableLayout: 'fixed', borderRadius: '8px', overflow: 'hidden' }}>
-                            <thead className="table-dark">
-                                <tr>
-                                    <th onClick={this.sortByProductName}>Name <FontAwesomeIcon icon={faSort} /></th>
-                                    <th onClick={this.sortByProductCat}>Category <FontAwesomeIcon icon={faSort} /></th>
-                                    <th>Description</th>
-                                    <th onClick={this.sortByProductPrice}>Price <FontAwesomeIcon icon={faSort} /></th>
-                                    <th onClick={this.sortByProductQty}>Quantity <FontAwesomeIcon icon={faSort} /></th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    products.length === 0 ?
-                                        <tr align="center">
-                                            <td colSpan="6">No Products Available</td>
-                                        </tr> :
-                                        currentProducts.map((item, i) => (
-                                            <tr key={i}>
-                                                <td>{item.name}</td>
-                                                <td>{item.category}</td>
-                                                <td>{item.description}</td>
-                                                <td>S${item.price.toFixed(2)}</td>
-                                                <td>{item.quantity}</td>
-                                                <td>
-                                                    <Stack direction="horizontal" gap={2}>
-                                                        <button className="btn btn-dark" onClick={() => this.updateProduct(item.id)}><FontAwesomeIcon icon={faPenToSquare} /> Edit</button>
-                                                        <button className="btn btn-dark" onClick={() => this.deleteProduct(item.id)}><FontAwesomeIcon icon={faTrashCan} /> Delete</button>
-                                                    </Stack>
-                                                </td>
-                                            </tr>
-                                        ))
-                                }
-                            </tbody>
-                        </table>
-
-                        {products.length > 0 ? (
-                            <Card.Footer>
-                                <div style={{ "float": "left" }}>
-                                    Showing Page {currentPage} of {totalPages}
-                                </div>
-                                <div style={{ float: "right" }}>
-                                    <InputGroup size="sm">
-                                        <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
-                                            onClick={this.toFirstPage}>
-                                            <FontAwesomeIcon icon={faBackwardFast} />
-                                        </Button>
-                                        <Button type="button" variant="outline-dark" disabled={currentPage === 1 ? true : false}
-                                            onClick={this.prevPage}>
-                                            <FontAwesomeIcon icon={faStepBackward} />
-                                        </Button>
-                                        <FormControl style={pageNumCss} name="currentPage" value={currentPage}
-                                            onChange={this.changePage} />
-                                        <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
-                                            onClick={this.nextPage}>
-                                            <FontAwesomeIcon icon={faStepForward} />
-                                        </Button>
-                                        <Button type="button" variant="outline-dark" disabled={currentPage === totalPages ? true : false}
-                                            onClick={this.toLastPage}>
-                                            <FontAwesomeIcon icon={faForwardFast} />
-                                        </Button>
-                                    </InputGroup>
-                                </div>
-                            </Card.Footer>) : null}
-                    </div>
+                    </section>
                 </div>
             </div>
-
 
         );
     }

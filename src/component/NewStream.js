@@ -82,39 +82,56 @@ class NewStream extends Component {
         return (
             <div>
                 <NavBar />
-                <div className="container mt-3">
-                    <div className="text-start">
-                        <h2>Add New Stream</h2>
-                        <br />
-                        <div className="mb-3">
-                            <label htmlFor="Title">Title:</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="title"
-                                required
-                                value={this.state.stream.title}
-                                onChange={this.onChangeTitle}
-                                name="title"
-                            />
+                <div className="body-bg">
+                    <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="schedule">Schedule:</label>
-                            <input
-                                type="datetime-local"
-                                className="form-control"
-                                id="tempSchedule"
-                                required
-                                value={this.state.stream.tempSchedule}
-                                onChange={this.onChangeSchedule}
-                                name="tempSchedule"
-                            />
+                        <div className="container mt-3">
+                            <div className="text-start">
+                                <h2>Add New Stream</h2>
+                                <br />
+                                <div className="mb-3">
+                                    <label htmlFor="Title">Title:</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="title"
+                                        required
+                                        value={this.state.stream.title}
+                                        onChange={this.onChangeTitle}
+                                        name="title"
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="schedule">Schedule:</label>
+                                    <input
+                                        type="datetime-local"
+                                        className="form-control"
+                                        id="tempSchedule"
+                                        required
+                                        value={this.state.stream.tempSchedule}
+                                        onChange={this.onChangeSchedule}
+                                        name="tempSchedule"
+                                    />
+                                </div>
+                                <button onClick={this.submit} className="btn btn-dark">
+                                    Add Stream
+                                </button>
+                                <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
+                            </div>
                         </div>
-                        <button onClick={this.submit} className="btn btn-dark">
-                            Add Stream
-                        </button>
-                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
-                    </div>
+                    </section>
                 </div>
             </div>
         );

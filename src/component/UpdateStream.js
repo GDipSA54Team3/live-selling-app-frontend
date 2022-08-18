@@ -101,6 +101,20 @@ class UpdateStream extends Component {
         return (
             <div>
                 <NavBar />
+                <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                        </div>
                 <div className="container mt-3">
                     <div className="text-start">
                         <h2>Edit Stream</h2>
@@ -135,6 +149,7 @@ class UpdateStream extends Component {
                         <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                     </div>
                 </div>
+               </section>
             </div>
         );
     }

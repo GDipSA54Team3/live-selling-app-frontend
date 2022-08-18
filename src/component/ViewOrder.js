@@ -100,6 +100,20 @@ class ViewOrder extends Component {
         return (
             <div>
                 <NavBar />
+                <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                        </div>
                 <div className="container mt-3">
                     <div className="text-start">
                         <h2>List Of Ordered Products:</h2>
@@ -160,6 +174,7 @@ class ViewOrder extends Component {
                         <button className="btn btn-outline-dark" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                     </div>
                 </div>
+             </section>   
             </div>
         );
     }

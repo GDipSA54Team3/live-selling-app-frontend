@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 import { withRouter } from './withRouter';
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import './RegisterUser.css';
 
 class RegisterUser extends Component {
     constructor(props) {
@@ -137,6 +137,21 @@ class RegisterUser extends Component {
         return (
             <div>
                 <NavBar />
+                <div className="body-bg">
+                    <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                        </div>
                 <div className="container mt-3">
                     <div align="center">
                         <div className="text-start" style={{ width: '500px' }}>
@@ -237,10 +252,12 @@ class RegisterUser extends Component {
                                 Submit
                             </button>
                             <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
-                        </div>
+                            </div>
                     </div>
                 </div>
+              </section>
             </div>
+         </div>
 
         );
     }

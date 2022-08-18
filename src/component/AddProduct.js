@@ -126,87 +126,104 @@ class AddProduct extends Component {
         return (
             <div>
                 <NavBar />
-                <div className="container mt-3">
-                    <div className="text-start">
-                        <h2>What do you want to add?</h2>
-                        {this.state.errorMsg === null ? <br /> : <p style={{ color: "#ff0000", whiteSpace: "pre-line" }}>{this.state.errorMsg}</p>}
-                        <div className="form-group mb-3" >
-                            <label htmlFor="name">
-                                Enter Name:
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="name"
-                                required
-                                value={this.state.currentProduct.name}
-                                onChange={this.onChangeName}
-                            />
+                <div className="body-bg">
+                    <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
                         </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="category">
-                                Enter Category:
-                            </label>
-                            <select className="form-select" aria-label="Default select example" name="product_category"
-                                value={this.state.currentProduct.category} onChange={this.onChangeCategory} >
-                                <option value="CLOTHING">Clothing</option>
-                                <option value="FOOD">Food</option>
-                                <option value="APPLIANCES">Home Appliances</option>
-                                <option value="FURNITURES">Furnitures</option>
-                                <option value="TECHNOLOGY">Electronics Devices</option>
-                                <option value="BABY">Baby Items and Toys</option>
-                                <option value="HEALTH">Health and Beauty</option>
-                                <option value="SPORTS">Sports Items</option>
-                                <option value="GROCERIES">Groceries</option>
-                                <option value="OTHERS">Others</option>
-                            </select>
-                        </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="price">
-                                Enter Price:
-                            </label>
-                            <div className="input-group">
-                                <span className="input-group-text col-1">S$</span>
-                                <input
-                                    type="number"
-                                    step=".01"
-                                    className="form-control"
-                                    id="Price"
-                                    required
-                                    value={this.state.currentProduct.price}
-                                    onChange={this.onChangePrice}
-                                />
+                        <div className="container mt-3">
+                            <div className="text-start">
+                                <h2>What do you want to add?</h2>
+                                {this.state.errorMsg === null ? <br /> : <p style={{ color: "#ff0000", whiteSpace: "pre-line" }}>{this.state.errorMsg}</p>}
+                                <div className="form-group mb-3" >
+                                    <label htmlFor="name">
+                                        Enter Name:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="name"
+                                        required
+                                        value={this.state.currentProduct.name}
+                                        onChange={this.onChangeName}
+                                    />
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="category">
+                                        Enter Category:
+                                    </label>
+                                    <select className="form-select" aria-label="Default select example" name="product_category"
+                                        value={this.state.currentProduct.category} onChange={this.onChangeCategory} >
+                                        <option value="CLOTHING">Clothing</option>
+                                        <option value="FOOD">Food</option>
+                                        <option value="APPLIANCES">Home Appliances</option>
+                                        <option value="FURNITURES">Furnitures</option>
+                                        <option value="TECHNOLOGY">Electronics Devices</option>
+                                        <option value="BABY">Baby Items and Toys</option>
+                                        <option value="HEALTH">Health and Beauty</option>
+                                        <option value="SPORTS">Sports Items</option>
+                                        <option value="GROCERIES">Groceries</option>
+                                        <option value="OTHERS">Others</option>
+                                    </select>
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="price">
+                                        Enter Price:
+                                    </label>
+                                    <div className="input-group">
+                                        <span className="input-group-text col-1">S$</span>
+                                        <input
+                                            type="number"
+                                            step=".01"
+                                            className="form-control"
+                                            id="Price"
+                                            required
+                                            value={this.state.currentProduct.price}
+                                            onChange={this.onChangePrice}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="description">
+                                        Enter Product Description:
+                                    </label>
+                                    <textarea
+                                        rows="3"
+                                        className="form-control"
+                                        id="Description"
+                                        required
+                                        value={this.state.currentProduct.description}
+                                        onChange={this.onChangeDescription}
+                                    />
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="quantity">
+                                        Enter Quantity:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        max="100"
+                                        className="form-control"
+                                        id="Quantity"
+                                        value={this.state.currentProduct.quantity}
+                                        onChange={this.onChangeQuantity}
+                                    />
+                                </div>
+                                <button className="btn btn-dark" onClick={this.submit}>Add It!</button>
+                                <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
                             </div>
                         </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="description">
-                                Enter Product Description:
-                            </label>
-                            <textarea
-                                rows="3"
-                                className="form-control"
-                                id="Description"
-                                required
-                                value={this.state.currentProduct.description}
-                                onChange={this.onChangeDescription}
-                            />
-                        </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="quantity">
-                                Enter Quantity:
-                            </label>
-                            <input
-                                type="number"
-                                max="100"
-                                className="form-control"
-                                id="Quantity"
-                                value={this.state.currentProduct.quantity}
-                                onChange={this.onChangeQuantity}
-                            />
-                        </div>
-                        <button className="btn btn-dark" onClick={this.submit}>Add It!</button>
-                        <button className="btn btn-outline-dark ms-2" onClick={() => this.props.navigate(-1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
-                    </div>
+                    </section>
                 </div>
             </div>
         );

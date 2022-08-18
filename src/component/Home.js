@@ -4,7 +4,7 @@ import NavBar from "./NavBar";
 import { withRouter } from './withRouter';
 import { faRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import './Home.css';
 
 class Home extends Component {
     constructor(props) {
@@ -69,7 +69,22 @@ class Home extends Component {
         return (
             <div>
                 <NavBar />
-                <div className="container mt-3">
+                <div className="body-bg">
+                    <section>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="color"></div>
+                        <div className="box">
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                            <div className="card"></div>
+                        </div>
+                <div className="container-fluid">
                     <div align="center">
                         <h1>Welcome!</h1>
                         <br />
@@ -101,8 +116,10 @@ class Home extends Component {
                             <button onClick={this.submit} className="btn btn-dark my-2"><FontAwesomeIcon icon={faRightToBracket} /> Sign in</button>
                             <button onClick={this.register} className="btn btn-outline-dark ms-2"><FontAwesomeIcon icon={faUserPlus} /> Register</button>
                             {this.state.errorMsg === "" ? null : <p style={{ color: "#ff0000" }}>{this.state.errorMsg}</p>}
+                            </div>
                         </div>
                     </div>
+                </section>
                 </div>
             </div>
         )

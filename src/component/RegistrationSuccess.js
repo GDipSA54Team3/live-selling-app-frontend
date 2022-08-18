@@ -28,15 +28,30 @@ class RegistrationSuccess extends Component {
         return (
             <div>
                 <NavBar />
-                <div className="container mt-3">
-                    <h1>Registration Success!</h1>
-                    {/* <p>You will be redirected to the login page automatically after {this.state.countdown} seconds...</p> */}
-                    <p>
-                        <button type="button" className="btn btn-link" onClick={() => this.props.navigate('/home')}>
-                            Click here to return to the login page.
-                        </button>
-                    </p>
-                </div>
+                <section>
+                    <div className="color"></div>
+                    <div className="color"></div>
+                    <div className="color"></div>
+                    <div className="box">
+                        <div className="card"></div>
+                        <div className="card"></div>
+                        <div className="card"></div>
+                        <div className="card"></div>
+                        <div className="card"></div>
+                        <div className="card"></div>
+                        <div className="card"></div>
+                        <div className="card"></div>
+                    </div>
+                    <div className="container mt-3">
+                        <h1>Registration Success!</h1>
+                        {/* <p>You will be redirected to the login page automatically after {this.state.countdown} seconds...</p> */}
+                        <p>
+                            <button type="button" className="btn btn-link" onClick={() => this.props.navigate('/home')}>
+                                Click here to return to the login page.
+                            </button>
+                        </p>
+                    </div>
+                </section>
             </div>
         );
     }
