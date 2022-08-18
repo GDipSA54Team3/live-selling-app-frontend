@@ -114,6 +114,15 @@ class AddProduct extends Component {
                 }
             }).catch(e => {
                 console.log(e);
+                if (e.response.status === 409) {
+                    this.setState({
+                        errorMsg: "*Product name already exists"
+                    });
+                } else if (e.response.status === 417) {
+                    this.setState({
+                        errorMsg: "*Error: Please try again later"
+                    });
+                }
             });
         } else {
             this.setState({
