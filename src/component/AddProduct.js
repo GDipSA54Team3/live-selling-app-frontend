@@ -114,6 +114,15 @@ class AddProduct extends Component {
                 }
             }).catch(e => {
                 console.log(e);
+                if (e.response.status === 409) {
+                    this.setState({
+                        errorMsg: "*Product name already exists"
+                    });
+                } else if (e.response.status === 417) {
+                    this.setState({
+                        errorMsg: "*Error: Please try again later"
+                    });
+                }
             });
         } else {
             this.setState({
@@ -151,12 +160,12 @@ class AddProduct extends Component {
                                 value={this.state.currentProduct.category} onChange={this.onChangeCategory} >
                                 <option value="CLOTHING">Clothing</option>
                                 <option value="FOOD">Food</option>
-                                <option value="APPLIANCES">Home Appliances</option>
+                                <option value="APPLIANCES">Appliances</option>
                                 <option value="FURNITURES">Furnitures</option>
-                                <option value="TECHNOLOGY">Electronics Devices</option>
-                                <option value="BABY">Baby Items and Toys</option>
-                                <option value="HEALTH">Health and Beauty</option>
-                                <option value="SPORTS">Sports Items</option>
+                                <option value="TECHNOLOGY">Technology</option>
+                                <option value="BABY">Baby</option>
+                                <option value="HEALTH">Health</option>
+                                <option value="SPORTS">Sports</option>
                                 <option value="GROCERIES">Groceries</option>
                                 <option value="OTHERS">Others</option>
                             </select>

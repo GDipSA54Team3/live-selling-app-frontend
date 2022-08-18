@@ -1,9 +1,14 @@
 
 .div-predcition {
   background-color: #fae3f1;
+  border-width:2px;
   border-radius: 10px;
-  padding: 20px;
+  border-color: #ee3ba9;
+  padding: 5px;
+  padding-bottom: 10px;
   margin: 5px;
+  min-height: 405px;
+ 
 }
 .div-Round {
   height: 75px;
@@ -38,6 +43,7 @@
   border-radius: 2px;
   padding: 5px;
   margin: 5px;
+
 }
 .div-contentCenter
   {
@@ -46,27 +52,52 @@
     justify-content: center;
 
   } 
-  .div-lightBoarder{
+  .div-lightBoarder-fixed{
   border-width:2px;
   border-style:solid;
   border-radius: 10px;
-  border-color:rgb(202, 199, 199);
-  padding: 5px;
+  border-color: #65aced;
   margin: 5px;
+  padding: 5px;
+  min-height: 285px;
+  
   }
+  .div-lightBoarder{
+    border-width:2px;
+    border-style:solid;
+    border-radius: 10px;
+    border-color: #65aced;
+    margin: 5px;
+    padding: 5px;  
+    }
   .div-grayfill{
     border-radius: 10px;
-    padding: 10px;
+    padding: 5px;
+    padding-bottom: 15px;
     margin: 5px;
-    background-color: rgb(202, 199, 199);
+    background-color:#65aced;
     
     }
   .div-graygapfill{
     border-radius: 10px;
-    padding: 10px;
+    padding: 5px; 
     margin: 10px;
-    background-color: rgb(202, 199, 199);
+    background-color: #65aced;    
   }  
+  .div-mainbg{ 
+    background-color: #d0e1f1;
+  }
+  .div-whitebg{ 
+    background-color: rgb(255, 255, 255);
+  }
+  .div-grayfill-fixed{
+    border-radius: 10px;
+    padding: 5px;
+    padding-bottom: 15px;
+    margin: 5px;
+    background-color:#65aced;
+    min-height: 700px;
+  }
   .div-background{
     position:absolute;
     left:0;

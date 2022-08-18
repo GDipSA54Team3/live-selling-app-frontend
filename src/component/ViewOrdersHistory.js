@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { withRouter } from './withRouter';
-import OrderDataService from '../Services/OrderDataService';
-import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
-import { faStepBackward, faStepForward, faBackwardFast, faForwardFast, faCircleInfo, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faBackwardFast, faChevronLeft, faForwardFast, faListUl, faStepBackward, faStepForward } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dateFormat from 'dateformat';
+import React, { Component } from 'react';
+import { Button, Card, FormControl, InputGroup } from "react-bootstrap";
+import OrderDataService from '../Services/OrderDataService';
 import NavBar from './NavBar';
+import { withRouter } from './withRouter';
 
 class ViewOrdersHistory extends Component {
     constructor(props) {
@@ -137,7 +137,7 @@ class ViewOrdersHistory extends Component {
                                                 <td className="text-truncate">{order.user.firstName} {order.user.lastName}</td>
                                                 <td className="text-truncate">{dateFormat(order.orderDateTime, "dd-mm-yyyy h:MM TT")}</td>
                                                 <td>{order.status}</td>
-                                                <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}><FontAwesomeIcon icon={faCircleInfo} /> View</button></td>
+                                                <td><button className="btn btn-dark ms-2" onClick={() => this.props.navigate('/vieworder/' + order.id)}><FontAwesomeIcon icon={faListUl} /> View</button></td>
                                                 {/* <td>
                                             <div style={{ whiteSpace: 'nowrap' }}>
                                                 <button className="btn btn-dark" onClick={() => this.updateOrderStatus(order.id, "CONFIRMED")}>Accept</button>
@@ -153,8 +153,8 @@ class ViewOrdersHistory extends Component {
                         {
                             orders.length > 0 ? (
                                 <Card.Footer>
-                                    <div style={{ "float": "left" }}>
-                                        Showing Page {currentPage} of {totalPages}
+                                    <div style={{ float: "left" }}>
+                                        Showing Page {currentPage} of {totalPages} - Total {this.state.orders.length} orders
                                     </div>
                                     <div style={{ float: "right" }}>
                                         <InputGroup size="sm">
