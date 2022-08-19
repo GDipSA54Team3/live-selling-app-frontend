@@ -1,7 +1,8 @@
+import { faChartLine, faRightFromBracket, faStore } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { faHouse, faChartLine, faStore, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import logo from '../live-selling-logo.png'
 
 function NavBar() {
     const user = JSON.parse(sessionStorage.getItem('user'));
@@ -13,8 +14,7 @@ function NavBar() {
 
         <nav className="navbar navbar-expand navbar-dark bg-dark">
             <div className="navbar-nav mr-auto">
-                <li>Demo</li>
-                <li className="nav-item"><Link to={"/home"} className="nav-link"><FontAwesomeIcon icon={faHouse} /> Home</Link></li>
+                <li className="nav-item"><Link to={"/home"} className="nav-link"><img style={{ height: '30px' }} src={logo} alt="logo"/></Link></li>
                 {
                     !user ? null :
                         <>
