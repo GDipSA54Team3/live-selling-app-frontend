@@ -12,7 +12,7 @@ function NavBar() {
 
     return (
 
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <nav className="navbar navbar-expand sticky-top navbar-dark bg-dark">
             <div className="navbar-nav mr-auto">
                 <li className="nav-item"><Link to={"/home"} className="nav-link"><img style={{ height: '30px' }} src={logo} alt="logo"/></Link></li>
                 {
