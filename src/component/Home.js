@@ -5,6 +5,7 @@ import { withRouter } from './withRouter';
 import { faRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Home.css';
+import logo from '../live-selling-logo.png'
 
 
 class Home extends Component {
@@ -88,7 +89,7 @@ class Home extends Component {
                         <div className="container_">
                             <div className="container mt-3">
                                 <div align="center">
-                                    <h1>Welcome!</h1>
+                                    <h1><img style={{ height: '50px' }} src={logo} alt="logo"/> Welcome!</h1>
                                     <br />
                                     <div className="text-start" style={{ width: '300px' }}>
                                         <div className="form-group my-2">
