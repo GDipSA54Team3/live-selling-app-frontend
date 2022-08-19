@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import { withRouter } from './withRouter';
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import moment from "moment";
 
 class NewStream extends Component {
     constructor(props) {
@@ -21,7 +22,8 @@ class NewStream extends Component {
             stream: {
                 title: "",
                 tempSchedule: "",
-            }
+            },
+            errorMsg: ""
         };
     }
 
@@ -55,14 +57,24 @@ class NewStream extends Component {
     }
 
     onChangeSchedule(e) {
-        this.setState(function (prevState) {
-            return {
-                stream: {
-                    ...prevState.stream,
-                    tempSchedule: e.target.value.toString()
+        if (moment(e.target.value).isAfter(moment().format("YYYY-MM-DDTHH:mm"))) {
+            this.setState(function (prevState) {
+                return {
+                    stream: {
+                        ...prevState.stream,
+                        tempSchedule: e.target.value.toString()
+                    }
                 }
-            }
-        });
+            });
+            this.setState({
+                errorMsg: ""
+            });
+        } else {
+            this.setState({
+                errorMsg: "*Stream schedule cannot be in the past"
+            });
+        }
+        
     }
 
     submit() {
@@ -85,7 +97,7 @@ class NewStream extends Component {
                 <div className="container mt-3">
                     <div className="text-start">
                         <h2>Add New Stream</h2>
-                        <br />
+                        {this.state.errorMsg === null ? <br /> : <p style={{ color: "#ff0000", whiteSpace: "pre-line" }}>{this.state.errorMsg}</p>}
                         <div className="mb-3">
                             <label htmlFor="Title">Title:</label>
                             <input
