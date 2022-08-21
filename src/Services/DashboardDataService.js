@@ -1,11 +1,19 @@
 import axios from "axios";
-const RATING_API_BASE_URL = "http://127.0.0.1:8080/api/rating/userrating/";
+// const RATING_API_BASE_URL = "http://127.0.0.1:8080/api/rating/userrating/";
+// const PREDICTION_API_BASE_URL = "http://127.0.0.1:5000/result";
+// const USER_LIKES_API_BASE_URL = "http://127.0.0.1:8080/api/likes/userlikes/";
+// const AVG_LIKE_API_BASE_URL = "http://127.0.0.1:8080/api/likes/avgstreamlikes/";
+// const CHART_API_BASE_URL = "http://127.0.0.1:5000/"
+// const STREAM_API_BASE_URL = "http://127.0.0.1:8080/api/user/"
+// const ORDER_API_BASE_URL = "http://127.0.0.1:8080/api/orders/"
+
+const RATING_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api/rating/userrating/";
 const PREDICTION_API_BASE_URL = "http://127.0.0.1:5000/result";
-const USER_LIKES_API_BASE_URL = "http://127.0.0.1:8080/api/likes/userlikes/";
-const AVG_LIKE_API_BASE_URL = "http://127.0.0.1:8080/api/likes/avgstreamlikes/";
+const USER_LIKES_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api/likes/userlikes/";
+const AVG_LIKE_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api/likes/avgstreamlikes/";
 const CHART_API_BASE_URL = "http://127.0.0.1:5000/"
-const STREAM_API_BASE_URL = "http://127.0.0.1:8080/api/user/"
-const ORDER_API_BASE_URL = "http://127.0.0.1:8080/api/orders/"
+const STREAM_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api/user/"
+const ORDER_API_BASE_URL = "https://live-stream-team3.azurewebsites.net/api/orders/"
 
 class DashboardDataService {  
     getUserAverageRating(userId){
